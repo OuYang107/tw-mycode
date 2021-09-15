@@ -6,9 +6,17 @@
           <el-col :span="4">
             <div class="grid-content">
               优惠编码:
-              <el-input style="width: 140px"
+              <el-autocomplete style="width: 140px"
+                               clearable
+                               v-model="searchData.discCode"
+                               :fetch-suggestions="querySearchAsync"
+                               placeholder="请输入内容"
+                               size="mini"
+                               :trigger-on-focus="false"
+                               @select="handleSubmit"></el-autocomplete>
+              <!-- <el-input style="width: 140px"
                         v-model="searchData.discCode"
-                        size="mini"></el-input>
+                        size="mini"></el-input> -->
             </div>
           </el-col>
           <el-col :span="4">
@@ -17,18 +25,21 @@
               <!-- <el-input style="width: 140px"
                         v-model="searchData.discName"
                         size="mini"></el-input> -->
-
               <el-autocomplete style="width: 140px"
+                               clearable
                                v-model="searchData.discName"
-                               :fetch-suggestions="querySearch"
+                               :fetch-suggestions="querySearchAsyncone"
                                placeholder="请输入内容"
-                               @select="handleSubmit"></el-autocomplete>
+                               size="mini"
+                               :trigger-on-focus="false"
+                               @select="handleSubmitone"></el-autocomplete>
             </div>
           </el-col>
           <el-col :span="7">
             <div class="block grid-content">
               <span style="font-size: 12px width: 140px">导入日期:</span>
               <el-date-picker v-model="rangeDate"
+                              clearable
                               size="mini"
                               type="daterange"
                               range-separator="至"
@@ -40,9 +51,17 @@
           <el-col :span="4">
             <div class="grid-content">
               导入人员:
-              <el-input style="width: 140px"
+              <!-- <el-input style="width: 140px"
                         v-model="searchData.settleId"
-                        size="mini"></el-input>
+                        size="mini"></el-input> -->
+              <el-autocomplete style="width: 140px"
+                               clearable
+                               v-model="searchData.importPerson"
+                               :fetch-suggestions="querySearchAsynctow"
+                               placeholder="请输入内容"
+                               size="mini"
+                               :trigger-on-focus="false"
+                               @select="handleSubmittow"></el-autocomplete>
             </div>
           </el-col>
           <el-col :span="3">
@@ -70,15 +89,25 @@
           </el-col>
         </el-row>
       </div>
+      <div style="">
+        <el-button size="mini"
+                   type="danger"
+                   @click="toggleSelection()">批量删除</el-button>
+      </div>
       <div class="table">
         <el-table :data="tableData"
                   align="center"
                   style="width: 100%"
                   border
-                  height="410"
+                  height="390"
                   tooltip-effect="light"
                   :header-cell-style="rowClass"
-                  :cell-style="cellStyle">
+                  :cell-style="cellStyle"
+                  @selection-change="handleSelectionChange">
+          <el-table-column type="selection"
+                           width="39"
+                           align="center">
+          </el-table-column>
           <el-table-column prop="discCode"
                            label="优惠编码"
                            width="105"
@@ -126,9 +155,10 @@
               <el-button @click="handeleDetail(scope.row.discCode)"
                          type="text"
                          size="mini">删除</el-button>
-              <el-button @click="handeleDetail(scope.row.discCode)"
+              <!-- <el-button @click="handeleDetails(scope.row.discCode)"
                          type="text"
-                         size="mini">编辑</el-button>
+                         size="mini">编辑</el-button> -->
+
             </template>
           </el-table-column>
           <!-- <el-table-column prop=""
@@ -142,6 +172,7 @@
                          align="center">
         </el-table-column> -->
         </el-table>
+
         <el-pagination :current-page.sync="searchData.pageNo"
                        :page-size="searchData.pageSize"
                        :total="searchData.total"
@@ -159,7 +190,16 @@
       <el-dialog :visible.sync="dialogVisible"
                  :before-close="handleDialogClose"
                  width="70%">
-
+        是否全覆盖 <el-select size="mini"
+                   style="width: 140px"
+                   v-model="isfugai"
+                   placeholder="请选择">
+          <el-option v-for="item in timeoption"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
         <div style="text-align: right">
           <el-button @click="getDownload"
                      type="success"
@@ -200,8 +240,9 @@
 </template>
 <script>
 import baseUrl from "@/api/baseUrl";
-import requestUrl from "@/api/url";
+// import requestUrl from "@/api/url";
 import apiSend from "@/api/httpRequest.js";
+import { download } from "@/api/request.js"
 export default {
   data () {
     return {
@@ -224,7 +265,7 @@ export default {
       // arr: '',
       // optionreason: [],
       // cityCode: '',
-      // isfugai: '否', //期数
+      isfugai: 0,
       timeoption: [
         { value: 1, label: "是" },
         { value: 0, label: "否" }
@@ -240,11 +281,18 @@ export default {
       },
       fileList: [],
       content: '',
-      discCodes: []
+      discCodes: [],
+      restaurants: [],
+      multipleSelection: []
     };
   },
   mounted () {
     this.query()
+    // this.restaurants = this.tableData
+    // console.log(this.tableData)
+  },
+  created () {
+    // console.log(this.tableData)
   },
   methods: {
     //查询按钮
@@ -262,26 +310,101 @@ export default {
         // this.searchData.total = res.data.data.current
         this.searchData.total = res.data.data.total
         this.tableData = res.data.data.records
+        this.restaurants = this.tableData
       }).catch(err => {
         console.log(err)
       })
     },
-
     handeleDetail (row) {
-      console.log()
-      // this.discCodes.splice(0, 1, row)
-      this.discCodes.push(row)
-      // let obj = { discCodes: this.discCodes }
+      console.log(row)
+      this.discCodes.splice(0, 1, row)         //---------gai
+      // this.discCodes.push(row)
+      // let obj = { discCodes: this.discCodes }      
       // obj.append('discCodes', this.discCodes)          删除
       apiSend.deleteSalesPromotionInfos({ data: this.discCodes }).then(res => {
+        this.query()
         // console.log(res.data)
-
       }).catch(err => {
         console.log(err)
       })
     },
-    handleChange (_q) {//第几期按钮
-      // console.log(q)
+    querySearchAsync (queryString, cb) {
+      // console.log(this.restaurants)
+      var restaurants = this.restaurants.map(item => {
+        return { value: item.discCode }
+      })
+      console.log(restaurants)
+      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        console.log(results)
+        cb(results);
+        console.log(cb(results))
+      }, 1000 * Math.random());
+    },
+    createStateFilter (queryString) {
+      console.log(queryString)
+      // state.value = state.cellCode
+      return (state) => {
+        // console.log(state.value)
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
+      };
+    },
+    handleSubmit (item) {
+      console.log(item);
+    },
+    querySearchAsyncone (queryString, cb) {
+      // console.log(this.restaurants)
+      var restaurants = this.restaurants.map(item => {
+        return { value: item.discName }
+      })
+      console.log(restaurants)
+      var results = queryString ? restaurants.filter(this.createStateFilterone(queryString)) : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        console.log(results)
+        cb(results);
+        console.log(cb(results))
+      }, 1000 * Math.random());
+    },
+    createStateFilterone (queryString) {
+      console.log(queryString)
+      // state.value = state.cellCode
+      return (state) => {
+        // console.log(state.value)
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
+      };
+    },
+    handleSubmitone (item) {
+      console.log(item);
+    },
+    querySearchAsynctow (queryString, cb) {
+      // console.log(this.restaurants)
+      var restaurants = this.restaurants.map(item => {
+        return { value: item.importPerson }
+      })
+      console.log(restaurants)
+      var results = queryString ? restaurants.filter(this.createStateFiltertow(queryString)) : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        console.log(results)
+        cb(results);
+        console.log(cb(results))
+      }, 1000 * Math.random());
+    },
+    createStateFiltertow (queryString) {
+      console.log(queryString)
+      // state.value = state.cellCode
+      return (state) => {
+        // console.log(state.value)
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
+      };
+    },
+    handleSubmittow (item) {
+      console.log(item);
     },
     resetting () { // 导入按钮
       this.dialogVisible = true
@@ -295,6 +418,7 @@ export default {
       // this.files.files.append(e.file)
     },
     handleDialogClose () {        // X 按钮
+      this.content = "";
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
@@ -305,10 +429,15 @@ export default {
         process.env.NODE_ENV == "development"
           ? baseUrl.development
           : baseUrl.production;
-      window.open(
-        base + "/dist/photoSatis.xlsx"
-
-      );
+      let obj = { type: 9 }
+      download(base + "/SatisfactionImport/download5GSatisModel", obj, "promote")
+      //   const base =
+      //     process.env.NODE_ENV == "development"
+      //       ? baseUrl.development
+      //       : baseUrl.production;
+      //   window.open(
+      //     base + "/dist/photoSatis.xlsx"
+      //   );
     },
     confirm () {  //确认按钮      
       // this.$refs["upfiles"].clearFiles();
@@ -325,7 +454,7 @@ export default {
         list.push(item.raw)
       })
       // console.log()
-      formData.append('type', this.files.type);
+      formData.append('type', this.isfugai);
       // formData.append("token", this.files.token)
       // formData.append('statisYear', this.files.statisYear);
       // console.log(list)
@@ -334,8 +463,9 @@ export default {
       let obj = []
       apiSend.checkExcel({ data: formData }).then(res => {
         let arr = res.data.data
-        console.log(res.data.data)
+
         if (arr.code == 1) {            //item.msg +  item.fileName + 
+
           // this.$message.warning('导入失败,第2行数据已存在，是否进行覆盖导入!');
           this.$confirm(arr.error + ", 是否确认导入?", "提示", {
             confirmButtomText: "确认",
@@ -346,12 +476,14 @@ export default {
               if (confirm) {
                 // console.log(999999999999)
                 //再调接口
-                this.files.type = 1;
+                // this.isfugai = 1;
                 // formData.append('type', this.files.type);
-                formData.set("type", this.files.type);
+                formData.set("type", this.isfugai);
                 apiSend.excelFile({ data: formData }).then((res) => {
                   // console.log(res.data.data.msg)
-                  this.files.type = 0;
+                  // this.isfugai = 0;
+                  obj.push(arr.error)
+                  obj.push(arr.exception1)
                   obj.push(res.data.data.msg)
                   //调完导入接口后查询
                   // this.$message.warning(res.data.data.msg + "!");
@@ -364,6 +496,30 @@ export default {
             .catch((err) => {
               console.log(err);
             });
+        }
+        if (arr.code == 2) {
+          this.$confirm(arr.question + ", 是否确认导入?", "提示", {
+            confirmButtomText: "确认",
+            cancelButtonText: "取消",
+            type: "warning",
+          }).then((res) => {
+            if (confirm) {
+              formData.set("type", this.isfugai);
+              apiSend.excelFile({ data: formData }).then((res) => {
+                obj.push(arr.error)
+                obj.push(arr.exception1)
+                obj.push(res.data.data.msg)
+              })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          })
+            .catch((err) => {
+              console.log(err);
+            });
+
+          obj.unshift(arr.question)
         }
         if (arr.code == 0) {
           obj.unshift(arr.msg)
@@ -380,10 +536,40 @@ export default {
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
-    noresetting () {      //导出按钮
+    toggleSelection () {       //批量删除按钮
+      console.log(this.multipleSelection)
+      if (this.multipleSelection.length) {
+        apiSend.deleteSalesPromotionInfos({ data: this.multipleSelection }).then(res => {
+          console.log(res)
+          this.query()
+        }).catch(err => {
+          console.log(err)
+        })
+        // rows.forEach(row => {
+        //   console.log(this.$refs.multipleTable.toggleRowSelection(row))
+        // });
+      } else {
+        this.$message.warning('请选择要删除的数据');
+        // this.$message({
+        //   message: '警告哦，这是一条警告消息',
+        //   type: 'warning'
+        // });
+        // this.$confirm("mdxl")
+        // console.log(11)
+        // this.$refs.multipleTable.clearSelection();
+      }
     },
-    handleChangetype (_val, _key) {      //结算月份按钮
-      // console.log(val, key)
+    handleSelectionChange (val) {
+      let obj = []
+
+      val.forEach(item => {
+        // console.log(item.discCode)
+        obj.push(item.discCode)
+      })
+      this.multipleSelection = obj
+      console.log(this.multipleSelection)
+    },
+    noresetting () {      //导出按钮
     },
     rowClass () {
     },
@@ -391,10 +577,12 @@ export default {
     },
     handleCurrentChange (val) { // 条数
       this.searchData.pageNo = val;
+      console.log(111)
       this.query()
     },
     handleSizeChange (val) {   // 一页多少条 
       this.searchData.pageSize = val;
+      console.log(22222)
       this.query()
     },
   }
@@ -406,9 +594,6 @@ export default {
   height: 150px;
   width: 700px;
   border: 1px solid black;
-}
-.el-cascader-panel {
-  // height: 300px;
 }
 .selects /deep/ .el-input--suffix {
   height: 28px;
@@ -423,9 +608,6 @@ export default {
 .selects /deep/ .el-input__inner {
   height: 28px !important;
   // display: l;
-}
-.miss {
-  // padding: 5px;
 }
 .content /deep/ .selects .el-cascader .el-input .el-input__inner {
   height: 28px !important;
@@ -469,9 +651,6 @@ export default {
   box-sizing: border-box;
   // margin: 10px;
   padding: 0 10px;
-}
-.el-row {
-  // margin-bottom: 20px;
 }
 .el-col {
   border-radius: 4px;

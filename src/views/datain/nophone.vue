@@ -189,7 +189,7 @@
         <el-table-column prop="q2Question"
                          label="Q2,结合您使用这个手机号码进行流量上网的体验，您给中国%TEMP%的手机上网质量打几分？"
                          show-overflow-tooltip
-                         width="155"
+                         width="175"
                          align="center">
         </el-table-column>
         <el-table-column prop="q3Question"
@@ -682,6 +682,7 @@
 import baseUrl from "@/api/baseUrl";
 import requestUrl from "@/api/url";
 import apiSend from "@/api/httpRequest.js";
+import { download } from "@/api/request.js"
 export default {
   data () {
     return {
@@ -857,12 +858,14 @@ export default {
         process.env.NODE_ENV == "development"
           ? baseUrl.development
           : baseUrl.production;
-      window.open(
-        base + "/dist/photoSatis.xlsx"
-        // requestUrl.getExcelTemplate +
-        // "?statisMonth=" +
-        // this.TemplateData["statisMonth"],
-      );
+      let obj = { type: 8 }
+      download(base + "/SatisfactionImport/download5GSatisModel", obj, "photoSatis")
+      // window.open(
+      //   base + "/dist/photoSatis.xlsx"
+      // requestUrl.getExcelTemplate +
+      // "?statisMonth=" +
+      // this.TemplateData["statisMonth"],
+      // );
     },
     confirm () {  //确认按钮
       // this.$refs["upfiles"].clearFiles();

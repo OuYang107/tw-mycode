@@ -51,6 +51,7 @@ module.exports = {
   // page: 'broadband',
   // title : 'broadband',
   // package: 'broadband',
+
   // page: 'keynote',
   // title : 'keynote',
   // package: 'keynote',
@@ -67,16 +68,23 @@ module.exports = {
   // title : 'nophone',
   // package: 'nophone',
 
-  // page: 'altogether',
-  // title: 'altogether',
-  // package: 'altogether',
+  page: 'altogether',
+  title: 'altogether',
+  package: 'altogether',
 
   // page: 'promote',
   // title: 'promote',
   // package: 'promote',
 
-  page: 'citrus',
-  title: 'citrus',
-  package: 'citrus',
+  // page: 'citrus',
+  // title: 'citrus',
+  // package: 'citrus',
 
+  // page: 'offgrade',
+  // title: 'offgrade',
+  // package: 'offgrade',
+
+  // page: 'newtable',
+  // title: 'newtable',
+  // package: 'newtable',
 }

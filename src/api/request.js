@@ -1,6 +1,7 @@
 import Vue from "@/main";
 import axios from "axios";
 import store from "../store";
+import baseUrl from "@/api/baseUrl";
 import {
   Message
 } from "element-ui";
@@ -9,6 +10,7 @@ import qs from 'qs'
 var loadingTime = 1000;
 axios.defaults.timeout = 15000;
 axios.interceptors.request.use(
+
   config => {
     // console.log('请求拦截器成功!',config)
     if (store.state.token) {
@@ -55,7 +57,6 @@ axios.interceptors.response.use(
   },
   error => {
     Vue.$httpLoading.close();
-
     // console.log("拦截器响应失败!", error);
     // console.log(error.response);
     if (error && error.response) {
@@ -139,18 +140,19 @@ export function requestPost (XMLObject) {
   return new Promise((resolve, reject) => {
     if (showLoading) {
       let time = XMLObject.loadingTime || loadingTime;
-      // Vue.$httpLoading.show();
+      Vue.$httpLoading.show();
       setTimeout(() => {
         resolve(XMLObject);
       }, time);
     } else {
-      Vue.$httpLoading.close();
+      // Vue.$httpLoading.close();
       resolve(XMLObject);
     }
   }).then(res => {
     return axios.post(res.url, formData);
   });
 }
+
 export function requestFile (XMLObject) {
   // debugger
   let showLoading =
@@ -239,10 +241,35 @@ export function requestExcel (XMLObject) {
     }
   }).then(res => {
     return axios.post(res.url, formData, {
+      // responseType: 'blob',
       headers: {
         'responseType': 'blob',
         'Content-Type': 'application/json;charset=UTF-8'
       }
     });
   });
+}
+
+// import axios from 'axios'
+export function download (url, params, title) {
+  axios({
+    method: 'post',
+    url: url,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
+    data: params,
+    responseType: 'blob',
+  }).then(res => {
+    const link = document.createElement('a')
+    const blob = new Blob([res.data], {
+      type: 'application/vnd.ms-excel'
+    })
+    link.style.display = 'none'
+    link.href = URL.createObjectURL(blob)
+    link.setAttribute('download', title + '.xlsx')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  })
 }

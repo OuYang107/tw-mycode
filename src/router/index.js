@@ -104,62 +104,62 @@ export default new Router({
     //   ],
     // }
     // ---------------------------    满意度6个
-    {              //新利哥三个导入页面
-      path: "/",
-      component: () =>
-        import("@/views/dengdatain/" + webpackInfo.page),
-      name: webpackInfo.page,
-    },
-    // ==========================
-    // {
+    // {              //新利哥三个导入页面
     //   path: "/",
-    //   component: () => import("@/views/datain/" + webpackInfo.page),
-    //   name: "webpackInfo.page",
-    //   children: [
-    //     {
-    //       path: "/",
-    //       component: () =>
-    //         import("@/views/datain/nophone"),
-    //       name: "nophone",
-    //     },
-    //     {
-    //       path: "generation",
-    //       component: () =>
-    //         import("@/views/datain/generation"),
-    //       name: "generation",
-    //     },
-    //     {
-    //       path: "broadband",
-    //       component: () =>
-    //         import("@/views/datain/broadband"),
-    //       name: "broadband",
-    //     },
-    //     {
-    //       path: "keynote",
-    //       component: () =>
-    //         import("@/views/datain/keynote"),
-    //       name: "keynote",
-    //     },
-    //     {
-    //       path: "special",
-    //       component: () =>
-    //         import("@/views/datain/special"),
-    //       name: "special",
-    //     },
-    //     {
-    //       path: "lianqinetwork",
-    //       component: () =>
-    //         import("@/views/datain/lianqinetwork"),
-    //       name: "lianqinetwork",
-    //     },
-    //     {
-    //       path: "juedecision",
-    //       component: () =>
-    //         import("@/views/datain/juedecision"),
-    //       name: "juedecision",
-    //     },
-    //   ],
-    // }
+    //   component: () =>
+    //     import("@/views/dengdatain/" + webpackInfo.page),
+    //   name: webpackInfo.page,
+    // },
+    // ==========================
+    {
+      path: "/",
+      component: () => import("@/views/datain/" + webpackInfo.page),
+      name: "webpackInfo.page",
+      children: [
+        {
+          path: "/",
+          component: () =>
+            import("@/views/datain/nophone"),
+          name: "nophone",
+        },
+        {
+          path: "generation",
+          component: () =>
+            import("@/views/datain/generation"),
+          name: "generation",
+        },
+        {
+          path: "broadband",
+          component: () =>
+            import("@/views/datain/broadband"),
+          name: "broadband",
+        },
+        {
+          path: "keynote",
+          component: () =>
+            import("@/views/datain/keynote"),
+          name: "keynote",
+        },
+        {
+          path: "special",
+          component: () =>
+            import("@/views/datain/special"),
+          name: "special",
+        },
+        {
+          path: "lianqinetwork",
+          component: () =>
+            import("@/views/datain/lianqinetwork"),
+          name: "lianqinetwork",
+        },
+        {
+          path: "juedecision",
+          component: () =>
+            import("@/views/datain/juedecision"),
+          name: "juedecision",
+        },
+      ],
+    }
     //  -===================================  详情导入
     // {
     //   path: "/",

@@ -137,5 +137,15 @@ export default {
   checkExcels: "/BlackSpotsController/checkExcel",
 
   // /BlackSpotsController/excelFile 质差和黑点导入------- 上同
-  excelFiles: "/BlackSpotsController/excelFile"
+  excelFiles: "/BlackSpotsController/excelFile",
+
+  // /TaDtUsUnsatisEvalMid05DController/findTaDtUsUnsatisEvalMid05DByDeptName 查询不满客户修复效果分析部门
+  findTaDtUsUnsatisEvalMid05DByDeptName: "/TaDtUsUnsatisEvalMid05DController/findTaDtUsUnsatisEvalMid05DByDeptName",
+
+  //   /TaDtUsUnsatisEvalMid05DController/findTaDtUsUnsatisEvalMid05DInfo
+  // 查询不满客户修复效果分析
+  findTaDtUsUnsatisEvalMid05DInfo: "/TaDtUsUnsatisEvalMid05DController/findTaDtUsUnsatisEvalMid05DInfo",
+
+  // /SatisfactionImport/download5GSatisModel集团满意度模板下载
+  download5GSatisModel: "/SatisfactionImport/download5GSatisModel",
 };

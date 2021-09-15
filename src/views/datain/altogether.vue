@@ -104,8 +104,8 @@
                 align="center"
                 style="width: 100%"
                 border
-                height="370"
-                :header-cell-style="rowClass "
+                height="430"
+                :header-cell-style="rowClass"
                 :cell-style="cellStyle">
         <el-table-column prop="dataCyc"
                          label="测评时间"
@@ -300,6 +300,7 @@
 import baseUrl from "@/api/baseUrl";
 import requestUrl from "@/api/url";
 import apiSend from "@/api/httpRequest.js";
+import { download } from "@/api/request.js"
 export default {
   data () {
     return {
@@ -361,7 +362,6 @@ export default {
     query () {
       apiSend.findTaRpUsGroupSatisAMid01MByDate({ data: this.searchData }).then(res => {
         console.log(res)
-
         // this.searchData.total  = res.data.data.current
         this.searchData.total = res.data.data.total
         this.tableData = res.data.data.records
@@ -385,6 +385,7 @@ export default {
       // this.files.files.append(e.file)
     },
     handleDialogClose () {        // X 按钮
+      this.content = ''
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
@@ -395,12 +396,14 @@ export default {
         process.env.NODE_ENV == "development"
           ? baseUrl.development
           : baseUrl.production;
-      window.open(
-        base + "/dist/model.xlsx"
-        // requestUrl.getExcelTemplate +
-        // "?statisMonth=" +
-        // this.TemplateData["statisMonth"],
-      );
+      let obj = { type: 7 }
+      download(base + "/SatisfactionImport/download5GSatisModel", obj, " model")
+      // window.open(
+      //   base + "/dist/model.xlsx"
+      // requestUrl.getExcelTemplate +
+      // "?statisMonth=" +
+      // this.TemplateData["statisMonth"],
+      // );
     },
     confirm () {  //确认按钮
       // this.$refs["upfiles"].clearFiles();
@@ -426,17 +429,20 @@ export default {
         let arr = res.data.data
         if (arr.code == 1) {
           obj.push(arr.msg)
-          this.content = obj
+
         }
         if (arr.code == 0) {
           obj.unshift(arr.msg)
         }
+        console.log(obj)
+        this.content = obj
       }).catch(err => {
         console.log(err)
       })
     },
     clearFile () {
       // clearFiles
+      this.content = ''
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
@@ -550,6 +556,7 @@ export default {
   background-color: #f9fafc;
 }
 /deep/ .el-table {
+  background: white;
   // margin-top: 10px;
   width: 100%;
   table {
@@ -599,5 +606,10 @@ export default {
   bottom: 0;
   left: 0;
   // padding-bottom: 10px;
+}
+.table /deep/ .el-pagination {
+  margin-top: 0 !important;
+  // margin-bottom: 10px;
+  background: white;
 }
 </style>

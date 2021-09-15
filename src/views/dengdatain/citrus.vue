@@ -7,6 +7,7 @@
             <div class="grid-content">
               小区编码:
               <el-autocomplete style="width: 140px"
+                               clearable
                                v-model="searchData.cellCode"
                                :fetch-suggestions="querySearchAsync"
                                placeholder="请输入内容"
@@ -21,9 +22,17 @@
           <el-col :span="4">
             <div class="grid-content">
               小区名称:
-              <el-input style="width: 140px"
+              <!-- <el-input style="width: 140px"
                         v-model="searchData.discName"
-                        size="mini"></el-input>
+                        size="mini"></el-input> -->
+              <el-autocomplete style="width: 140px"
+                               clearable
+                               v-model="searchData.baseInfoName"
+                               :fetch-suggestions="querySearchAsyncone"
+                               placeholder="请输入内容"
+                               size="mini"
+                               :trigger-on-focus="false"
+                               @select="handleSubmitone"></el-autocomplete>
             </div>
           </el-col>
           <el-col :span="7">
@@ -31,6 +40,7 @@
               <span style="font-size: 12px width: 140px">导入日期:</span>
               <el-date-picker v-model="rangeDate"
                               size="mini"
+                              clearable
                               type="daterange"
                               range-separator="至"
                               start-placeholder="开始日期"
@@ -41,9 +51,17 @@
           <el-col :span="4">
             <div class="grid-content">
               导入人员:
-              <el-input style="width: 140px"
+              <!-- <el-input style="width: 140px"
                         v-model="searchData.settleId"
-                        size="mini"></el-input>
+                        size="mini"></el-input> -->
+              <el-autocomplete style="width: 140px"
+                               clearable
+                               v-model="searchData.importPerson"
+                               :fetch-suggestions="querySearchAsynctow"
+                               placeholder="请输入内容"
+                               size="mini"
+                               :trigger-on-focus="false"
+                               @select="handleSubmittow"></el-autocomplete>
             </div>
           </el-col>
           <el-col :span="3">
@@ -71,15 +89,25 @@
           </el-col>
         </el-row>
       </div>
+      <div style="">
+        <el-button size="mini"
+                   type="danger"
+                   @click="toggleSelection()">批量删除</el-button>
+      </div>
       <div class="table">
         <el-table :data="tableData"
                   align="center"
                   style="width: 100%"
                   border
-                  height="410"
+                  height="390"
                   tooltip-effect="light"
                   :header-cell-style="rowClass"
-                  :cell-style="cellStyle">
+                  :cell-style="cellStyle"
+                  @selection-change="handleSelectionChange">
+          <el-table-column type="selection"
+                           width="39"
+                           align="center">
+          </el-table-column>
           <el-table-column prop="cellCode"
                            label="小区编码"
                            width="105"
@@ -124,12 +152,12 @@
               <a href="#"
                  @click="handeleDetail(scope.row.discCode)">编辑</a> -->
 
-              <el-button @click="handeleDetail(scope.row.discCode)"
+              <el-button @click="handeleDetail(scope.row.cellCode)"
                          type="text"
                          size="mini">删除</el-button>
-              <el-button @click="handeleDetail(scope.row.discCode)"
+              <!-- <el-button @click="handeleDetail(scope.row.discCode)"
                          type="text"
-                         size="mini">编辑</el-button>
+                         size="mini">编辑</el-button> -->
             </template>
           </el-table-column>
           <!-- <el-table-column prop=""
@@ -156,11 +184,19 @@
     <div class="dialog">
       <!--    //==================== -->
       <!-- <el-row> -->
-
       <el-dialog :visible.sync="dialogVisible"
                  :before-close="handleDialogClose"
                  width="70%">
-
+        <!-- 是否全覆盖 <el-select size="mini"
+                   style="width: 140px"
+                   v-model="isfugai"
+                   placeholder="请选择">
+          <el-option v-for="item in timeoption"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select> -->
         <div style="text-align: right">
           <el-button @click="getDownload"
                      type="success"
@@ -200,9 +236,11 @@
   </div>
 </template>
 <script>
+// import axios from "axios"
 import baseUrl from "@/api/baseUrl";
-import requestUrl from "@/api/url";
+// import requestUrl from "@/api/";
 import apiSend from "@/api/httpRequest.js";
+import { download } from "@/api/request.js"
 export default {
   data () {
     return {
@@ -210,12 +248,13 @@ export default {
       dialogVisible: false,
       tableData: [],
       searchData: {
+        cellType: 2,
         // statisYear: 2021,
         pageNo: 1,    //一页条数
         pageSize: 10,      //页数
         total: 10,
-        discCode: "",
-        discName: "",
+        cellCode: "",
+        baseInfoName: "",
         importEndTime: "",
         importPerson: "",
         importStartTime: "",
@@ -226,15 +265,20 @@ export default {
       // optionreason: [],
       // cityCode: '',
       // isfugai: '否', //期数
-      timeoption: [
-        { value: 1, label: "是" },
-        { value: 0, label: "否" }
-      ],
+      // timeoption: [
+      //   { value: 1, label: "是" },
+      //   { value: 0, label: "否" }
+      // ],
+      isfugai: 2,
+      // timeoption: [
+      //   { value: 1, label: "是" },
+      //   { value: 0, label: "否" }
+      // ],
       // cntyArrOptins: [],
       //存放区县
       // options1: [],
       files: {
-        type: 0,
+        type: 10,
         files: {},
         // statisYear: 2021,
         token: "12",
@@ -242,7 +286,9 @@ export default {
       fileList: [],
       content: '',
       discCodes: [],
-      restaurants: []
+      restaurants: [],
+      // type: 10
+      multipleSelection: []
     };
   },
   mounted () {
@@ -276,13 +322,14 @@ export default {
     },
 
     handeleDetail (row) {
-      console.log()
-      // this.discCodes.splice(0, 1, row)
-      this.discCodes.push(row)
+      console.log(row)
+      this.discCodes.splice(0, 1, row)         //-- 改动
+      // this.discCodes.push(row)
       // let obj = { discCodes: this.discCodes }
-      // obj.append('discCodes', this.discCodes)          删除
+      // obj.append('discCodes', this.discCodes)        
       apiSend.deleteBlackSpotsInfos({ data: this.discCodes }).then(res => {
-        // console.log(res.data)
+        console.log(res)
+        this.query()
       }).catch(err => {
         console.log(err)
       })
@@ -300,17 +347,69 @@ export default {
         console.log(results)
         cb(results);
         console.log(cb(results))
-      }, 2000 * Math.random());
+      }, 1000 * Math.random());
     },
     createStateFilter (queryString) {
       console.log(queryString)
       // state.value = state.cellCode
       return (state) => {
         // console.log(state.value)
-        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
       };
     },
     handleSubmit (item) {
+      console.log(item);
+    },
+    querySearchAsyncone (queryString, cb) {
+      // console.log(this.restaurants)
+      var restaurants = this.restaurants.map(item => {
+        return { value: item.baseInfoName }
+      })
+      console.log(restaurants)
+      var results = queryString ? restaurants.filter(this.createStateFilterone(queryString)) : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        console.log(results)
+        cb(results);
+        console.log(cb(results))
+      }, 1000 * Math.random());
+    },
+    createStateFilterone (queryString) {
+      console.log(queryString)
+      // state.value = state.cellCode
+      return (state) => {
+        // console.log(state.value)
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
+      };
+    },
+    handleSubmitone (item) {
+      console.log(item);
+    },
+    querySearchAsynctow (queryString, cb) {
+      // console.log(this.restaurants)
+      var restaurants = this.restaurants.map(item => {
+        return { value: item.importPerson }
+      })
+      console.log(restaurants)
+      var results = queryString ? restaurants.filter(this.createStateFiltertow(queryString)) : restaurants;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        console.log(results)
+        cb(results);
+        console.log(cb(results))
+      }, 1000 * Math.random());
+    },
+    createStateFiltertow (queryString) {
+      console.log(queryString)
+      // state.value = state.cellCode
+      return (state) => {
+        // console.log(state.value)
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1);
+      };
+    },
+    handleSubmittow (item) {
       console.log(item);
     },
     resetting () { // 导入按钮
@@ -325,21 +424,63 @@ export default {
       // this.files.files.append(e.file)
     },
     handleDialogClose () {        // X 按钮
+      this.content = "";
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
     //模板下载按钮
     getDownload () {
       // this.TemplateData["statisMonth"] = this.files.statisYear
+      // const base =
+      //   process.env.NODE_ENV == "development"
+      //     ? baseUrl.development
+      //     : baseUrl.production;
+      // window.open(
+      //   base + "/dist/photoSatis.xlsx"
+      // );
+      // let formData = new FormData()
+      // formData.append('type', 10);
+      // console.log(formData
       const base =
         process.env.NODE_ENV == "development"
           ? baseUrl.development
           : baseUrl.production;
-      window.open(
-        base + "/dist/photoSatis.xlsx"
-      );
+      let obj = { type: 10 }
+      download(base + "/SatisfactionImport/download5GSatisModel", obj, " offgrade")
+      // let obj = {"10"}
+      // apiSend.download5GSatisModel({ data: obj }).then(res => {
+      //   // window.open(res)
+      //   console.log(res, 111)
+      // }).catch(err => {
+      //   console.log(err, "错误")
+      // })
+      // axios({
+      //   method: 'POST', //或者POST
+      //   url: baseUrl.development + "/SatisfactionImport/download5GSatisModel",
+      //   responseType: 'blob',
+      //   data: obj,
+      //   headers: {
+      //     'Content-Type': 'application/json;charset=UTF-8'
+      //   }
+      // }).then(res => {
+      //   console.log(res, 1111111)
+      //   let result = res.data;
+      //   let blob = new Blob([result], { type: "application/vnd.ms-excel" });
+      //   console.log(blob)
+      //   let url = window.URL.createObjectURL(blob);
+      //   console.log(url)
+      //   let link = document.createElement('a');
+      //   // link.download = "product.xls";
+      //   link.href = url;
+      //   link.click();
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+
+
     },
     confirm () {  //确认按钮      
+      // this.content = ""
       // this.$refs["upfiles"].clearFiles();
       // this.dialogVisible = false;
       if (this.fileList.length == 0) {
@@ -354,7 +495,7 @@ export default {
         list.push(item.raw)
       })
       // console.log()
-      formData.append('type', this.files.type);
+      formData.append('cellType', this.isfugai);
       // formData.append("token", this.files.token)
       // formData.append('statisYear', this.files.statisYear);
       // console.log(list)
@@ -362,9 +503,11 @@ export default {
       // -------------------
       let obj = []
       apiSend.checkExcels({ data: formData }).then(res => {
-        let arr = res.data.data
-        console.log(res.data.data)
-        if (arr.code == 1) {            //item.msg +  item.fileName + 
+        let arr = res.data
+        console.log(res.data)
+        if (arr.code == 1) {
+          // console.log(11111111111111111111111111111111111111111111111111111)
+          //item.msg +  item.fileName + 
           // this.$message.warning('导入失败,第2行数据已存在，是否进行覆盖导入!');
           this.$confirm(arr.error + ", 是否确认导入?", "提示", {
             confirmButtomText: "确认",
@@ -375,13 +518,18 @@ export default {
               if (confirm) {
                 // console.log(999999999999)
                 //再调接口
-                this.files.type = 1;
+                // this.files.type = 1;
                 // formData.append('type', this.files.type);
-                formData.set("type", this.files.type);
+                formData.set("cellType", this.isfugai);
                 apiSend.excelFiles({ data: formData }).then((res) => {
                   // console.log(res.data.data.msg)
-                  this.files.type = 0;
-                  obj.push(res.data.data.msg)
+                  // this.files.type = 0;
+                  // console.log(res, 55555555555)
+                  obj.push(arr.error)
+                  obj.push(arr.question)
+                  if (res.data.code == 0) {
+                    obj.push(res.data.msg)
+                  }
                   //调完导入接口后查询
                   // this.$message.warning(res.data.data.msg + "!");
                 })
@@ -414,6 +562,38 @@ export default {
     rowClass () {
     },
     cellStyle () {
+    },
+    toggleSelection () {       //批量删除按钮
+      console.log(this.multipleSelection)
+      if (this.multipleSelection.length) {
+        apiSend.deleteBlackSpotsInfos({ data: this.multipleSelection }).then(res => {
+          console.log(res)
+          this.query()
+        }).catch(err => {
+          console.log(err)
+        })
+        // rows.forEach(row => {
+        //   console.log(this.$refs.multipleTable.toggleRowSelection(row))
+        // });
+      } else {
+        this.$message.warning('请选择要删除的数据');
+        // this.$message({
+        //   message: '警告哦，这是一条警告消息',
+        //   type: 'warning'
+        // });
+        // this.$confirm("mdxl")
+        // console.log(11)
+        // this.$refs.multipleTable.clearSelection();
+      }
+    },
+    handleSelectionChange (val) {
+      console.log(val)
+      let obj = []
+      val.forEach(item => {
+        obj.push(item.cellCode)
+      })
+      this.multipleSelection = obj
+      console.log(this.multipleSelection)
     },
     handleCurrentChange (val) { // 条数
       this.searchData.pageNo = val;

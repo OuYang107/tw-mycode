@@ -409,6 +409,7 @@
 import baseUrl from "@/api/baseUrl";
 import requestUrl from "@/api/url";
 import apiSend from "@/api/httpRequest.js";
+import { download } from "@/api/request.js"
 export default {
   data () {
     return {
@@ -503,12 +504,15 @@ export default {
         process.env.NODE_ENV == "development"
           ? baseUrl.development
           : baseUrl.production;
-      window.open(
-        base + "/dist/groupPolicySatis.xlsx"
-        // requestUrl.getExcelTemplate +
-        // "?statisMonth=" +
-        // this.TemplateData["statisMonth"],
-      );
+      let obj = { type: 4 }
+      download(base + "/SatisfactionImport/download5GSatisModel", obj, "groupPolicySatis")
+
+      // window.open(
+      //   base + "/dist/groupPolicySatis.xlsx"
+      // requestUrl.getExcelTemplate +
+      // "?statisMonth=" +
+      // this.TemplateData["statisMonth"],
+      // );
     },
     confirm () {  //确认按钮
       // this.$refs["upfiles"].clearFiles();

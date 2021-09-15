@@ -58,7 +58,6 @@ export default {
   }
 }
 </script>
-
 <style lang="less" scoped>
 .boxs {
   // background: white;

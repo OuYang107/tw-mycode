@@ -161,11 +161,11 @@
         <el-table-column prop="q1Question"
                          label="Q1,结合您使用这个手机号码接打电话的体验，您给中国%TEMP%的语音通话质量打几分？"
                          align="center"
-                         width="105">
+                         width="155">
         </el-table-column>
         <el-table-column prop="q2Question"
                          label="Q2,结合您使用这个手机号码进行流量上网的体验，您给中国%TEMP%的手机上网质量打几分？"
-                         width="105"
+                         width="155"
                          align="center">
         </el-table-column>
         <el-table-column prop="q3Question"
@@ -177,17 +177,17 @@
         <el-table-column prop="q4Question"
                          label="Q4,您觉得中国%TEMP%手机套餐内容是否满足您日常通话和流量使用，可以打几分？"
                          align="center"
-                         width="105">
+                         width="155">
           <!-- <a title="Q4,您觉得中国%TEMP%手机套餐内容是否满足您日常通话和流量使用，可以打几分？"></a> -->
         </el-table-column>
         <el-table-column prop="q5Question"
                          label="Q5,您觉得中国%TEMP%手机套餐的订购或变更过程是否便捷，可以打几分？"
-                         width="105"
+                         width="145"
                          align="center">
         </el-table-column>
         <el-table-column prop="q6Question"
                          label="Q6,您觉得中国%TEMP%手机套餐的订购或变更过程是否规范,可以打几分?"
-                         width="105"
+                         width="145"
                          align="center">
         </el-table-column>
         <el-table-column prop="q7Question"
@@ -603,6 +603,7 @@
 import baseUrl from "@/api/baseUrl";
 import requestUrl from "@/api/url";
 import apiSend from "@/api/httpRequest.js";
+import { download } from "@/api/request.js"
 export default {
   data () {
     return {
@@ -760,12 +761,14 @@ export default {
         process.env.NODE_ENV == "development"
           ? baseUrl.development
           : baseUrl.production;
-      window.open(
-        base + "/dist/5GSatis.xlsx"
-        // requestUrl.getExcelTemplate +
-        // "?statisMonth=" +
-        // this.TemplateData["statisMonth"],
-      );
+      let obj = { type: 1 }
+      download(base + "/SatisfactionImport/download5GSatisModel", obj, "5GSatis")
+      // window.open(
+      //   base + "/dist/5GSatis.xlsx"
+      // requestUrl.getExcelTemplate +
+      // "?statisMonth=" +
+      // this.TemplateData["statisMonth"],
+      // );
     },
     confirm () {  //确认按钮
       // this.$refs["upfiles"].clearFiles();

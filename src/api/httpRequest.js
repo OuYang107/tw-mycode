@@ -243,6 +243,21 @@ const excelFiles = function (params) {   //导入
   params.url = url.excelFiles;
   return requestPost(getParams(params));
 };
+const findTaDtUsUnsatisEvalMid05DByDeptName = function (params) {   //查询不满客户修复效果分析部门
+  params.url = url.findTaDtUsUnsatisEvalMid05DByDeptName;
+  return requestPost(getParams(params));
+};
+
+const findTaDtUsUnsatisEvalMid05DInfo = function (params) {   //查询不满客户修复效果分析
+  params.url = url.findTaDtUsUnsatisEvalMid05DInfo;
+  return requestPost(getParams(params));
+};
+
+const download5GSatisModel = function (params) {   // 模板下载
+  params.url = url.download5GSatisModel;
+  return requestExcel(getParams(params));
+};
+
 export default {
   getSummaryData,
   getDetailData,
@@ -288,5 +303,9 @@ export default {
   findBlackSpotsInfo,
   deleteBlackSpotsInfos,
   checkExcels,
-  excelFiles
+  excelFiles,
+  findTaDtUsUnsatisEvalMid05DByDeptName,
+  findTaDtUsUnsatisEvalMid05DInfo,
+
+  download5GSatisModel
 };
