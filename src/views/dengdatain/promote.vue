@@ -5,8 +5,8 @@
         <el-row>
           <el-col :span="4">
             <div class="grid-content">
-              优惠编码:
-              <el-autocomplete style="width: 140px"
+              优惠编码：
+              <el-autocomplete style="width: 130px"
                                clearable
                                v-model="searchData.discCode"
                                :fetch-suggestions="querySearchAsync"
@@ -21,11 +21,11 @@
           </el-col>
           <el-col :span="4">
             <div class="grid-content">
-              优惠名称:
+              优惠名称：
               <!-- <el-input style="width: 140px"
                         v-model="searchData.discName"
                         size="mini"></el-input> -->
-              <el-autocomplete style="width: 140px"
+              <el-autocomplete style="width: 130px"
                                clearable
                                v-model="searchData.discName"
                                :fetch-suggestions="querySearchAsyncone"
@@ -37,7 +37,7 @@
           </el-col>
           <el-col :span="7">
             <div class="block grid-content">
-              <span style="font-size: 12px width: 140px">导入日期:</span>
+              <span style="font-size: 12px width: 140px">导入日期：</span>
               <el-date-picker v-model="rangeDate"
                               clearable
                               size="mini"
@@ -50,11 +50,11 @@
           </el-col>
           <el-col :span="4">
             <div class="grid-content">
-              导入人员:
+              导入人员：
               <!-- <el-input style="width: 140px"
                         v-model="searchData.settleId"
                         size="mini"></el-input> -->
-              <el-autocomplete style="width: 140px"
+              <el-autocomplete style="width: 130px"
                                clearable
                                v-model="searchData.importPerson"
                                :fetch-suggestions="querySearchAsynctow"
@@ -64,7 +64,7 @@
                                @select="handleSubmittow"></el-autocomplete>
             </div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="5">
             <div class="grid-content a">
               <el-row>
                 <el-button type="primary"
@@ -72,18 +72,17 @@
                            @click="query">查询</el-button>
                 <el-button size="mini"
                            @click="dialogVisible = true">导入</el-button>
-                <!-- <el-button size="mini"
-                         type="warning"
-                         @click="noresetting">导出</el-button> -->
+                <el-button size="mini"
+                           @click="noresetting">重置</el-button>
               </el-row>
               <el-col :span="3">
                 <!-- <el-button
           style="margin-left: 350px;"
                 size="mini"
-                type="warning"
+                type="warning"  type="warning"
                 @click="resetting"
               >明细查询页面</el-button> -->
-                <!-- <el-link type="primary" size="mini"  style="margin-left: 350px;">明细查询页面</el-link> -->
+                <!-- <el-link type="primary" size="mini" style="margin-left: 350px;">明细查询页面</el-link> -->
               </el-col>
             </div>
           </el-col>
@@ -151,14 +150,12 @@
                  @click="handeleDetail(scope.row.discCode)">删除</a>
               <a href="#"
                  @click="handeleDetail(scope.row.discCode)">编辑</a> -->
-
               <el-button @click="handeleDetail(scope.row.discCode)"
                          type="text"
                          size="mini">删除</el-button>
               <!-- <el-button @click="handeleDetails(scope.row.discCode)"
                          type="text"
                          size="mini">编辑</el-button> -->
-
             </template>
           </el-table-column>
           <!-- <el-table-column prop=""
@@ -172,7 +169,6 @@
                          align="center">
         </el-table-column> -->
         </el-table>
-
         <el-pagination :current-page.sync="searchData.pageNo"
                        :page-size="searchData.pageSize"
                        :total="searchData.total"
@@ -186,12 +182,11 @@
     <div class="dialog">
       <!--    //==================== -->
       <!-- <el-row> -->
-
       <el-dialog :visible.sync="dialogVisible"
                  :before-close="handleDialogClose"
-                 width="70%">
+                 width="50%">
         是否全覆盖 <el-select size="mini"
-                   style="width: 140px"
+                   style="width: 90px"
                    v-model="isfugai"
                    placeholder="请选择">
           <el-option v-for="item in timeoption"
@@ -483,7 +478,14 @@ export default {
                   // console.log(res.data.data.msg)
                   // this.isfugai = 0;
                   obj.push(arr.error)
-                  obj.push(arr.exception1)
+                  obj.unshift(arr.question)
+                  let item = arr
+                  for (var _demo in item) {
+                    if (_demo.indexOf('exception') != -1) {
+                      obj.push(item[_demo])
+                    }
+                    // console.log(item[_demo])
+                  }
                   obj.push(res.data.data.msg)
                   //调完导入接口后查询
                   // this.$message.warning(res.data.data.msg + "!");
@@ -506,8 +508,17 @@ export default {
             if (confirm) {
               formData.set("type", this.isfugai);
               apiSend.excelFile({ data: formData }).then((res) => {
+                console.log(111111)
                 obj.push(arr.error)
-                obj.push(arr.exception1)
+                // obj.push(arr.exception1)
+                // console.log(arr, 14545456)
+                // console.log(111111111)
+                let item = arr
+                for (var _demo in item) {
+                  if (_demo.indexOf('exception') != -1)
+                    console.log(item[_demo])
+                  obj.push(item[_demo])
+                }
                 obj.push(res.data.data.msg)
               })
                 .catch((err) => {
@@ -518,7 +529,6 @@ export default {
             .catch((err) => {
               console.log(err);
             });
-
           obj.unshift(arr.question)
         }
         if (arr.code == 0) {
@@ -537,7 +547,7 @@ export default {
       this.$refs["upfiles"].clearFiles();
     },
     toggleSelection () {       //批量删除按钮
-      console.log(this.multipleSelection)
+      // console.log(this.multipleSelection)
       if (this.multipleSelection.length) {
         apiSend.deleteSalesPromotionInfos({ data: this.multipleSelection }).then(res => {
           console.log(res)
@@ -561,7 +571,6 @@ export default {
     },
     handleSelectionChange (val) {
       let obj = []
-
       val.forEach(item => {
         // console.log(item.discCode)
         obj.push(item.discCode)
@@ -569,7 +578,11 @@ export default {
       this.multipleSelection = obj
       console.log(this.multipleSelection)
     },
-    noresetting () {      //导出按钮
+    noresetting () {      //重置按钮
+      this.searchData.discCode = ''
+      this.searchData.discName = ''
+      this.rangeDate = ''
+      this.searchData.importPerson = ''
     },
     rowClass () {
     },
@@ -577,12 +590,12 @@ export default {
     },
     handleCurrentChange (val) { // 条数
       this.searchData.pageNo = val;
-      console.log(111)
+      // console.log(111)
       this.query()
     },
     handleSizeChange (val) {   // 一页多少条 
       this.searchData.pageSize = val;
-      console.log(22222)
+      // console.log(22222)
       this.query()
     },
   }
@@ -592,7 +605,7 @@ export default {
 .listtpey {
   overflow-y: scroll;
   height: 150px;
-  width: 700px;
+  width: 80%;
   border: 1px solid black;
 }
 .selects /deep/ .el-input--suffix {

@@ -1,8 +1,6 @@
 <template>
-  <div
-    id="mainone"
-    :style="{'width': girdWidth,'height':'180px'}"
-  ></div>
+  <div id="mainone"
+       :style="{'width': girdWidth,'height':'180px'}"></div>
 </template>
 
 <script>
@@ -10,7 +8,7 @@ import * as echarts from 'echarts';
 export default {
   data () {
     return {
-
+      data: "",
     }
   },
   computed: {
@@ -49,7 +47,6 @@ export default {
             let tarValue = 0;
             for (let i = 0, l = data.length; i < l; i++) {
               total += data[i].value;
-
               // console.log(name)
               if (data[i].name == name) {
                 tarValue = data[i].value;
@@ -108,7 +105,6 @@ export default {
               { value: 900, name: '本月号卡数' },
               { value: 300, name: '网卡号卡数' },
             ],
-
           }
         ]
       };

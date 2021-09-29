@@ -227,7 +227,7 @@
         <div class="grid-content"
              style="display: inline-block">
           期数：
-          <el-select size="mini "
+          <el-select size="mini"
                      style="width: 90px"
                      v-model="searchData.cycNum"
                      placeholder="请选择"
@@ -408,6 +408,7 @@ export default {
     confirm () {  //确认按钮
       // this.$refs["upfiles"].clearFiles();
       // this.dialogVisible = false;
+      console.log(this.fileList.length)
       if (this.fileList.length == 0) {
         this.$message.warning("请上传文件！");
         return;
@@ -429,7 +430,6 @@ export default {
         let arr = res.data.data
         if (arr.code == 1) {
           obj.push(arr.msg)
-
         }
         if (arr.code == 0) {
           obj.unshift(arr.msg)
@@ -450,10 +450,8 @@ export default {
 
     },
     handleChangetype (_val, _key) {      //结算月份按钮
-      // console.log(val, key)
     },
     rowClass () {
-
     },
     cellStyle () {
 
@@ -461,7 +459,6 @@ export default {
     handleCurrentChange (val) { // 条数
       console.log(val)
       this.searchData.pageNo = val;
-
       this.query()
     },
     handleSizeChange (val) {   // 一页多少条 

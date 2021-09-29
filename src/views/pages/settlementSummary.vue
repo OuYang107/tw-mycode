@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24">
         <div class="grid-content"
-             v-show="isshow">
+             v-if="isshow==1">
           总体概览-全网性业务结算差异对比汇总
         </div>
       </el-col>
@@ -11,7 +11,7 @@
     <div class="page-main">
       <div class="page-menu"
            style="margin-top: 10px"
-           v-show="isshow">
+           v-if="isshow==1">
         <el-row>
           <el-col :span="6"
                   style="margin-left: 50px">
@@ -34,8 +34,7 @@
               <el-select v-model="searchData.busiType"
                          placeholder="请选择业务线"
                          size="mini"
-                         style="width: 205px"
-                         @click.native="marquee()">
+                         style="width: 205px">
                 <el-option v-for="item in options"
                            :key="item.value"
                            :label="item.label"
@@ -45,7 +44,6 @@
               </el-select>
             </div>
           </el-col>
-
           <el-col :span="5"
                   style="margin-left: 30px">
             <div class="flex-cen">
@@ -107,7 +105,7 @@
          结算月份 : {{this.searchData.statisMonth}}
       </div> -->
       <div style="width: 100%; margin-top: 10px"
-           v-if="isshow">
+           v-if="isshow==1">
         <el-table :data="tableData"
                   style="width: 100%"
                   :header-cell-style="{ background: '#eaeff7', color: '#444' }">
@@ -126,12 +124,12 @@
             <el-table-column align="center"
                              prop="settleId"
                              label="编码"
-                             min-width="60">
+                             min-width="55">
             </el-table-column>
             <el-table-column align="center"
                              prop="settleName"
                              label="名称"
-                             min-width="160">
+                             min-width="150">
             </el-table-column>
           </el-table-column>
           <el-table-column label="本月结入"
@@ -139,18 +137,18 @@
             <el-table-column align="center"
                              prop="taxMoneySettleIn"
                              label="省内(元)"
-                             min-width="100">
+                             min-width="90">
             </el-table-column>
             <el-table-column align="center"
                              prop="taxMoneySettleInJiTuan"
                              label="集团(元)"
-                             min-width="100"
+                             min-width="90"
                              class-name="isaction">
             </el-table-column>
             <el-table-column align="center"
                              prop="diffMoneyIn"
                              label="差异费用(元)"
-                             min-width="110">
+                             min-width="100">
             </el-table-column>
             <el-table-column align="center"
                              prop="diffMoneyRateIn"
@@ -163,18 +161,18 @@
             <el-table-column align="center"
                              prop="taxMoneySettleOut"
                              label="省内(元)"
-                             min-width="100">
+                             min-width="90">
             </el-table-column>
             <el-table-column align="center"
                              prop="taxMoneySettleOutJiTuan"
                              label="集团(元)"
-                             min-width="100"
+                             min-width="90"
                              class-name="isaction">
             </el-table-column>
             <el-table-column align="center"
                              prop="diffMoneyOut"
                              label="差异费用(元)"
-                             min-width="110">
+                             min-width="100">
             </el-table-column>
             <el-table-column align="center"
                              prop="diffMoneyRateOut"
@@ -190,6 +188,14 @@
                  @click="handeleDetail(scope.row.settleId)">{{ scope.row.settleId }}明细查看</a>
             </template>
           </el-table-column>
+          <el-table-column align="center"
+                           label="差异原因"
+                           min-width="80">
+            <template slot-scope="scope">
+              <a href="#"
+                 @click="account(scope.row.settleId)">{{ scope.row.settleId }}差异原因</a>
+            </template>
+          </el-table-column>
         </el-table>
         <div class="flex-end">
           <el-pagination :current-page.sync="searchData.pageNo"
@@ -202,7 +208,7 @@
                          @current-change="handleCurrentChange" />
         </div>
       </div>
-      <div v-else>
+      <div v-else-if="isshow==2">
         <el-row>
           <el-col :span="24">
             <div class="grid-content">差异说明</div>
@@ -253,11 +259,79 @@
                        @size-change="handleSizeChanges"
                        @current-change="handleCurrentChanges" />
       </div>
+
+      <div v-else-if="isshow==3">
+        <el-row>
+          <el-col :span="24">
+            <div class="grid-content">差异原因</div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6"
+                  style="margin-left: 50px; margin-bottom: 10px; margin-top: 10px">
+            <div class="flex-cen">
+              结算月份：
+              <el-date-picker style="width: 160px"
+                              v-model="searchData.statisMonth"
+                              type="month"
+                              placeholder="请选择结算月份"
+                              size="mini"
+                              format="yyyyMM"
+                              value-format="yyyyMM"
+                              :editable="false">
+              </el-date-picker>
+            </div>
+          </el-col>
+          <el-button type="primary"
+                     style="margin-left: 750px; margin-top: 10px"
+                     size="mini"
+                     @click="revert">返回</el-button>
+        </el-row>
+        <el-table :data="tableDatas"
+                  style="width: 100%"
+                  :header-cell-style="{ background: '#eaeff7', color: '#444' }">
+          <!-- <el-table-column :label="item['FIELD_NAME']"
+                           :prop="item['UPPER(FIELD)']"
+                           :class-name="getClass(item['UPPER(FIELD)'])"
+                           align="center"
+                           v-for="(item, index) in searchDatas"
+                           :key="index">
+          </el-table-column> -->
+          <el-table-column label="业务类型"
+                           prop="BUSI_TYPE"
+                           width="180"
+                           align="center">
+          </el-table-column>
+          <el-table-column label="结算单编码"
+                           prop="SETTLE_ID"
+                           width="120"
+                           align="center">
+          </el-table-column>
+          <el-table-column label="结算单名称"
+                           prop="SETTLE_NAME"
+                           width="180"
+                           align="center">
+          </el-table-column>
+          <el-table-column label="差异原因说明"
+                           prop="DIFFERENCE_REASON_EXPLAIN"
+                           width="783"
+                           align="center">
+          </el-table-column>
+        </el-table>
+        <el-pagination :current-page.sync="searchDatas.pageNo"
+                       :page-size="searchDatas.pageSize"
+                       :total="searchDatas.total"
+                       style="margin-top: 20px; text-align: center"
+                       :page-sizes="[1, 5, 10, 30]"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       @size-change="handleSizeChanges"
+                       @current-change="handleCurrentChanges" />
+      </div>
     </div>
 
     <el-dialog :visible.sync="dialogVisible"
                :before-close="handleDialogClose"
-               width="70%">
+               width="60%">
       <div style="text-align: right">
         <el-button @click="getDownload"
                    type="success"
@@ -327,7 +401,7 @@ export default {
     // console.log(typeof parseInt(currentDate))
     return {
       dialogVisible: false,
-      isshow: true,
+      isshow: 1,
       jieruisfilter: [
         {
           value: null,
@@ -367,6 +441,12 @@ export default {
         pageNo: 1,
       },
       DescriptionData: {
+        settleId: "settleId",
+        statisMonth: currentDate,
+        pageSize: 10,
+        pageNo: 1,
+      },
+      pagethreeData: {
         settleId: "settleId",
         statisMonth: currentDate,
         pageSize: 10,
@@ -414,6 +494,10 @@ export default {
     //      }
   },
   created () { },
+  mounted () {
+    this.marquee();
+    this.findTable();
+  },
   methods: {
     // cellstyle (row) {
     //   // console.log(row.row.diffMoneyRateIn)
@@ -430,7 +514,7 @@ export default {
     // },
     getClass (current) {
       // console.log(current);
-      // return current == ('SETTLE_IN_TAX_MONEY' || 'SETTLE_OUT_TAX_MONEY')  ? 'isaction' : '' ;
+      // return current == ('SETTLE_IN_TAX_MONEY' || 'SETTLE_OUT_TAX_MONEY') ? 'isaction' : '' ;
       return current == "SETTLE_IN_TAX_MONEY" ||
         current == "SETTLE_OUT_TAX_MONEY"
         ? "isaction"
@@ -540,7 +624,7 @@ export default {
     },
     // 返回按钮
     revert () {
-      this.isshow = !this.isshow;
+      this.isshow = 1;
     },
     //现网  全量业务接口
     marquee () {
@@ -552,7 +636,6 @@ export default {
           this.options.unshift({ label: "全部", value: "" })
           //  console.log(res)
           //  console.log(res.data.data.types[0].value)
-
         })
         .catch((err) => {
           console.log(err);
@@ -564,7 +647,7 @@ export default {
     findTable () {
       // this.TemplateData['statisMonth'] = this.DescriptionData['statisMonth'];
       // debugger    首页搜索接口
-      console.log(this.searchData.busiType);
+      // console.log(this.searchData.busiType);
       // if (this.searchData.busiType == "") {
       //   this.$message.warning("请选择业务类型!");
       //   return;
@@ -573,13 +656,10 @@ export default {
         .getSummaryData({ data: this.searchData })
         .then((res) => {
           console.log(res);
-
-
           this.tableData = res.data.data.records;
           //  this.total = Number(res.data.total)
           this.searchData.total = res.data.data.total;
           //  -------------
-
           //  this.DescriptionData.settleId = res.data.settleId
           //  console.log(this.tableData)
         })
@@ -589,8 +669,7 @@ export default {
     },
     //现网详情接口
     handeleDetail (id) {
-      this.isshow = !this.isshow;
-      console.log(this.isshow);
+      this.isshow = 2;
       this.detailId = id;
       this.DescriptionData["statisMonth"] = this.searchData["statisMonth"];
       this.DescriptionData["settleId"] = id;
@@ -604,11 +683,31 @@ export default {
           this.searchDatas = current;
           this.searchDatas.total = res.data.data.total;
           // console.log(res.data.fields[0].UPPER(FIELD))
-
           //  console.log(res.data.fields(value).forEach( item => {
           //   return item(value)
           //  })  )
           //  console.log(this.tableDatas)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    account (id) {   //差异原因
+      this.isshow = 3;
+      this.detailId = id;
+      this.pagethreeData["statisMonth"] = this.searchData["statisMonth"];
+      this.pagethreeData["settleId"] = id;
+
+      apiSend
+        .getDifferences({ data: this.pagethreeData })
+        .then((res) => {
+          console.log(res)
+          this.tableDatas = res.data.data.records;
+          let current = res.data.data.fields.filter(
+            (item) => !(item["FIELD_NAME"] && item["FIELD_NAME"] == "统计月份")
+          );
+          this.searchDatas = current;
+          this.searchDatas.total = res.data.data.total;
         })
         .catch((err) => {
           console.log(err);
@@ -658,7 +757,8 @@ export default {
 }
 .flex-end {
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
+  justify-content: center;
   // margin-right: 50px;
 }
 .menu-right .menu-btn {

@@ -49,10 +49,11 @@ export default {
   }
   .el-table .cell {
     line-height: 1.2 !important;
-    font-size:14px;
+    font-size: 14px;
   }
 }
 .app-main {
+  // border: 1px solid red;
   /* margin-top: 30px; */
   // padding-top: 3rem;
   display: flex;

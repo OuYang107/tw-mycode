@@ -3,9 +3,9 @@ module.exports = {
   // title: 'IOP产品维表',
   // package: 'productTable',
 
-  // page: 'settlementSummary',
-  // title : 'settlementSummary',
-  // package: 'settlementSummary',
+  page: 'settlementSummary',
+  title: 'settlementSummary',
+  package: 'settlementSummary',
   // LOGIN_KEY : '0', // 0 => 关闭单点登录 1 => 开启单点登录
 
   // page: 'pone',
@@ -68,9 +68,9 @@ module.exports = {
   // title : 'nophone',
   // package: 'nophone',
 
-  page: 'altogether',
-  title: 'altogether',
-  package: 'altogether',
+  // page: 'altogether',
+  // title: 'altogether',
+  // package: 'altogether',
 
   // page: 'promote',
   // title: 'promote',
@@ -87,4 +87,12 @@ module.exports = {
   // page: 'newtable',
   // title: 'newtable',
   // package: 'newtable',
+
+  // page: 'aa',
+  // title: 'aa',
+  // package: 'aa',
+
+  // page: 'invented',
+  // title: 'invented',
+  // package: 'invented',
 }

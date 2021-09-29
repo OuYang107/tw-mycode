@@ -148,4 +148,7 @@ export default {
 
   // /SatisfactionImport/download5GSatisModel集团满意度模板下载
   download5GSatisModel: "/SatisfactionImport/download5GSatisModel",
+
+  // /detail/getDifferences 全网结算新增页面接口
+  getDifferences: "/detail/getDifferences"
 };

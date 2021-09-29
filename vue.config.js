@@ -6,9 +6,7 @@ const webpackInfo = require('./src/utils/webpack')
 // const baseUrl = process.env.NODE_ENV === "production" ? "/static/" : "/"; //font scss资源路径 不同环境切换控制
 module.exports = {
   // 基本路径
-  publicPath: process.env.NODE_ENV === 'production'
-    ? './'
-    : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   // 输出文件目录
   outputDir: webpackInfo.package,
   assetsDir: 'static',

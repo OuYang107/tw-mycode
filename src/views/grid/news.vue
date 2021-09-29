@@ -1,10 +1,8 @@
 <template>
   <div class="box">
     <div class="left ">
-      <div
-        class="left-one compoonents"
-        :style="{'height': getHeight('left')}"
-      >
+      <div class="left-one compoonents"
+           :style="{'height': getHeight('left')}">
         <p class="makeone"> 攻坚进展</p>
         <div class="makedatas">
           <div class="makedata">
@@ -29,37 +27,24 @@
           </div>
         </div>
       </div>
-      <div
-        class="left-tow compoonents"
-        :style="{'height':getHeight('left')}"
-      >
+      <div class="left-tow compoonents"
+           :style="{'height':getHeight('left')}">
         <div class="makemakeone"> <span class="makeone">业务发展</span>
           <span class="more">更多</span>
         </div>
-
-        <el-form
-          :inline="true"
-          :model="formInline"
-          size="mini"
-          label-min-width="105px"
-        >
-          <el-form-item
-            class="fromstyle"
-            style="min-width: 100px; height:30px"
-          >
-            <el-select
-              style="width:120px; margin-left: 10px;"
-              v-model="formInline.region"
-              placeholder="移动宽带"
-            >
-              <el-option
-                label="移动宽带一"
-                value="shanghai"
-              ></el-option>
-              <el-option
-                label="移动宽带二"
-                value="beijing"
-              ></el-option>
+        <el-form :inline="true"
+                 :model="formInline"
+                 size="mini"
+                 label-min-width="105px">
+          <el-form-item class="fromstyle"
+                        style="min-width: 100px; height:30px">
+            <el-select style="width:120px; margin-left: 10px;"
+                       v-model="formInline.region"
+                       placeholder="移动宽带">
+              <el-option label="移动宽带一"
+                         value="shanghai"></el-option>
+              <el-option label="移动宽带二"
+                         value="beijing"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -110,38 +95,28 @@
       </div>
     </div>
     <div class="content">
-      <div
-        class="box-card compoonents"
-        :style="{'height':getHeight('content')}"
-      >
+      <div class="box-card compoonents"
+           :style="{'height':getHeight('content')}">
         <div @click="switchs">切换</div>
         <div @click="clicks">打開</div>
-
       </div>
       <div class="foot">
-        <div
-          class="foot-one compoonents"
-          :style="{'height':getHeight('foot')}"
-        >
+        <div class="foot-one compoonents"
+             :style="{'height':getHeight('foot')}">
           <div class="makeone">近半年业务发展走势</div>
           <!-- <div class="makeone">近半年业务发展走势</div> -->
           <pthree></pthree>
           <!-- <p>1</p> -->
         </div>
-        <div
-          class="foot-tow compoonents"
-          :style="{'height':getHeight('foot')}"
-        >
+        <div class="foot-tow compoonents"
+             :style="{'height':getHeight('foot')}">
           <div class="makeone">
             <span class="">投诉量及分布类型</span>
             <!-- <span class="">投诉量及分布类型</span> -->
-
             <!-- <div class="makeone">投诉量及分布类型</div> -->
             <span class="radios">
-              <el-radio-group
-                v-model="radio3"
-                size="mini"
-              >
+              <el-radio-group v-model="radio3"
+                              size="mini">
                 <el-radio-button label="按投诉类型"></el-radio-button>
                 <el-radio-button label="按客户类型"></el-radio-button>
               </el-radio-group>
@@ -156,22 +131,16 @@
               <i class="iconfont icon-shangsheng"></i>
             </span>
           </div>
-
           <ptow></ptow>
           <!-- <span>122342</span> -->
-
         </div>
       </div>
     </div>
-    <div
-      v-if="isshow"
-      class="right left "
-      :style="{'height':rightHeight} + 'px'"
-    >
-      <div
-        class="right-one compoonents"
-        :style="{'height':getHeight('right')}"
-      >
+    <div v-if="isshow"
+         class="right left "
+         :style="{'height':rightHeight} + 'px'">
+      <div class="right-one compoonents"
+           :style="{'height':getHeight('right')}">
         <div class="makeone">消费画像</div>
 
         <div class="servicedata">
@@ -189,30 +158,20 @@
               <p>近三个平均DPU</p>
             </span>
           </div>
-          <el-form
-            :inline="true"
-            :model="formInline"
-            size="mini"
-            label-min-width="70px"
-            class="biao"
-          >
-            <el-form-item
-              class="fromstyle"
-              style="min-width: 70px; height:13px"
-            >
-              <el-select
-                style="width:120px;"
-                v-model="formInline.region"
-                placeholder="魔百盒"
-              >
-                <el-option
-                  label="魔百盒一"
-                  value="shanghai"
-                ></el-option>
-                <el-option
-                  label="魔百盒二"
-                  value="beijing"
-                ></el-option>
+          <el-form :inline="true"
+                   :model="formInline"
+                   size="mini"
+                   label-min-width="70px"
+                   class="biao">
+            <el-form-item class="fromstyle"
+                          style="min-width: 70px; height:13px">
+              <el-select style="width:120px;"
+                         v-model="formInline.region"
+                         placeholder="魔百盒">
+                <el-option label="魔百盒一"
+                           value="shanghai"></el-option>
+                <el-option label="魔百盒二"
+                           value="beijing"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -233,31 +192,23 @@
         </div>
 
       </div>
-      <div
-        class="right-tow compoonents"
-        :style="{'height':getHeight('right')}"
-      >
+      <div class="right-tow compoonents"
+           :style="{'height':getHeight('right')}">
         <div class="makeone">竟对信息-卡号对比</div>
         <newone> </newone>
       </div>
-      <div
-        class="right-three compoonents"
-        :style="{'height':getHeight('right')}"
-      >
+      <div class="right-three compoonents"
+           :style="{'height':getHeight('right')}">
         <div class="makeone">竟对信息-宽带对比</div>
         <newtow> </newtow>
 
       </div>
     </div>
 
-    <div
-      v-else
-      class="right"
-    >
-      <div
-        class="right-one compoonents"
-        :style="{'height':getHeight('rights')}"
-      >
+    <div v-else
+         class="right">
+      <div class="right-one compoonents"
+           :style="{'height':getHeight('rights')}">
         <div class="makemakeone">
           <span class="makeone">营运统计</span>
           <span class="censusmore">更多</span>
@@ -328,7 +279,6 @@
           </div>
           <div class="censusdatas">
             <div> <span><img :src="img.img3"></span> <span class="font">份额</span></div>
-
             <div class="censusdatasdiv">
               <div>
                 <p class="censusdataspfont">期末市场份额</p>
@@ -355,25 +305,19 @@
         </div>
 
       </div>
-      <div
-        class="right-tow compoonents"
-        :style="{'height':getHeight('right')}"
-      >
+      <div class="right-tow compoonents"
+           :style="{'height':getHeight('right')}">
         <div class="makemakeone">
           <span class="makeone">效绩考核评分</span>
-          <el-form
-            label-width="10px"
-            class="demo-ruleForm"
-            style="display: inline-block;"
-          >
+          <el-form label-width="10px"
+                   class="demo-ruleForm"
+                   style="display: inline-block;">
             <el-form-item>
-              <el-date-picker
-                v-model="ruleForm.date1"
-                size=mini
-                type="date"
-                placeholder="2021-07-30"
-                style="width:105px; height: 10px; font-size: 5px;"
-              ></el-date-picker>
+              <el-date-picker v-model="ruleForm.date1"
+                              size=mini
+                              type="date"
+                              placeholder="2021-07-30"
+                              style="width:105px; height: 10px; font-size: 5px;"></el-date-picker>
             </el-form-item>
           </el-form>
           <span class="grademore">更多</span>
@@ -390,30 +334,24 @@
               <p>3</p>
             </div>
             <div class="gradedatasdiv">
-              <p
-                class="gradedatasp"
-                v-for="(a,index) in data.gradedataone"
-                :key="index"
-              >{{a}}</p>
+              <p class="gradedatasp"
+                 v-for="(a,index) in data.gradedataone"
+                 :key="index">{{a}}</p>
             </div>
           </div>
           <div class="gradedatas">
             <div class="gradedatasdiv">
-              <p
-                class="gradedatasp"
-                v-for="(i,index) in data.gradedatatow"
-                :key="index"
-              >{{i}}</p>
+              <p class="gradedatasp"
+                 v-for="(i,index) in data.gradedatatow"
+                 :key="index">{{i}}</p>
             </div>
 
           </div>
           <div class="gradedatas">
             <div class="gradedatasdiv">
-              <p
-                class="gradedatasp"
-                v-for="(i,index) in data.gradedatathree"
-                :key="index"
-              >{{i}}</p>
+              <p class="gradedatasp"
+                 v-for="(i,index) in data.gradedatathree"
+                 :key="index">{{i}}</p>
             </div>
           </div>
         </div>
@@ -422,51 +360,37 @@
 
     <!-- -----------------弹出框 -->
     <!-- fdsafksoadpfjoi -->
-    <el-dialog
-      title="长房半岛蓝湾（他建）二期小区"
-      top=15vh
-      :visible.sync="dialogVisible"
-      width="57%"
-      lock-scroll:true
-      custom-class="dialog"
-    >
+    <el-dialog title="长房半岛蓝湾（他建）二期小区"
+               top=15vh
+               :visible.sync="dialogVisible"
+               width="57%"
+               lock-scroll:true
+               custom-class="dialog">
       <div class="">
-        <el-tabs
-          v-model="activeName"
-          @tab-click="handleClick"
-        >
-          <el-tab-pane
-            label="基础信息"
-            name="first"
-          >
+        <el-tabs v-model="activeName"
+                 @tab-click="handleClick">
+          <el-tab-pane label="基础信息"
+                       name="first">
             <div class="pops">
               <div class="pops-one">
                 <div class="pops-onedata">
-                  <p
-                    v-for="(item,index) in popdataone"
-                    :key="index"
-                  >{{item}}:</p>
+                  <p v-for="(item,index) in popdataone"
+                     :key="index">{{item}}:</p>
                 </div>
                 <div class="pops-towdata">
-                  <p
-                    v-for="(item,index) in popdatatow"
-                    :key="index"
-                  >{{item}}</p>
+                  <p v-for="(item,index) in popdatatow"
+                     :key="index">{{item}}</p>
                 </div>
 
               </div>
               <div class="pops-tow">
                 <div class="pops-onedata">
-                  <p
-                    v-for="(item,index) in popdataone"
-                    :key="index"
-                  >{{item}}:</p>
+                  <p v-for="(item,index) in popdataone"
+                     :key="index">{{item}}:</p>
                 </div>
                 <div class="pops-towdata">
-                  <p
-                    v-for="(item,index) in popdatatow"
-                    :key="index"
-                  >{{item}}</p>
+                  <p v-for="(item,index) in popdatatow"
+                     :key="index">{{item}}</p>
                 </div>
               </div>
             </div>

@@ -1,12 +1,9 @@
 <template>
 
   <!-- <span class="">近半年业务发展走势</span> -->
-  <div
-    id="main"
-    :style="{'width': girdWidth,'height':'170px'}"
-  ></div>
+  <div id="main"
+       :style="{'width': girdWidth,'height':'170px'}"></div>
   <!-- <div>近半年业务发展走势</div> -->
-
 </template>
 <script>
 import * as echarts from 'echarts';
@@ -69,7 +66,6 @@ export default {
           // color: ['#8552a1', '#8552a1', '#8552a1', '#8552a1', '#8552a1'],
           data: ['移动宽带', '魔百盒', '智能组网', '语音遥控', '家庭安防', '全部', '走势']
         },
-
         grid: {
           x: 38,
           y: 150,
@@ -103,7 +99,7 @@ export default {
               show: false,
             },
             splitLine: {     //网格线
-              show: false
+              show: false,
             }
           }
         ],
@@ -148,7 +144,6 @@ export default {
             },
             //     "axisLine":{       //y轴
             //   "show":false
-
             // },
             axisLine: {
               // color: '#FFFFFF',
@@ -244,7 +239,6 @@ export default {
             emphasis: {
               focus: 'series'
             },
-
             data: [195, 127, 151, 469, 130]
           },
           {
@@ -273,9 +267,7 @@ export default {
               normal: {
                 color: function (params) {
                   //自定义颜色
-                  var colorList = [
-                    '#ef5b9c', '#ef5b9c', '#ef5b9c', '#ef5b9c', '#ef5b9c'
-                  ];
+                  var colorList = ['#ef5b9c', '#ef5b9c', '#ef5b9c', '#ef5b9c', '#ef5b9c'];
                   return colorList[params.dataIndex]
                 }
               }
@@ -285,7 +277,6 @@ export default {
             },
             data: [258, 107, 151, 120, 260]
           },
-
           {
             name: '走势',
             type: 'line',
@@ -300,7 +291,6 @@ export default {
           // ----------
         ]
       };
-
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     }

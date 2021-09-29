@@ -546,7 +546,6 @@ export default {
         { label: '2021', value: '2021' },
         { label: '2020', value: '2020' },
       ],
-
       cntyArrOptins: [],
       //存放区县
       options1: [],
@@ -580,7 +579,6 @@ export default {
     },
     resetting () { // 导入按钮
       this.dialogVisible = true
-
     },
     setChange (_file, fileList) {
       // console.log(fileList)
@@ -644,7 +642,6 @@ export default {
         //     if (_demo.indexOf('exception') != -1)
         //       obj.push(item.fileName + item[_demo])
         //   }
-
         // }
         // if (item.code == 0) {
         //   console.log(item.fileName + item.msg)
@@ -662,25 +659,22 @@ export default {
       this.$refs["upfiles"].clearFiles();
     },
     noresetting () {      //导出按钮
-
     },
     handleChangetype (_val, _key) {      //结算月份按钮
       // console.log(val, key)
     },
     rowClass () {
-
     },
     cellStyle () {
-
     },
     handleCurrentChange (val) { // 条数
-      console.log(val)
+      // console.log(val)
       this.searchData.pageNo = val;
 
       this.query()
     },
     handleSizeChange (val) {   // 一页多少条 
-      console.log(val)
+      // console.log(val)
       this.searchData.pageSize = val;
       this.query()
     },

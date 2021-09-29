@@ -23,7 +23,7 @@
         <el-col :span="3">
           <div class="grid-content">
             期数：
-            <el-select size="mini "
+            <el-select size="mini"
                        style="width: 100px"
                        v-model="qishu"
                        placeholder="请选择"
@@ -536,6 +536,7 @@ export default {
       // this.input = ''
     },
     rowClass ({ row, rowIndex, column }) {
+
       // if (column.label == "地市") {
       //   column.label = "区县"
       // }

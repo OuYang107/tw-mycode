@@ -361,7 +361,6 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-
       // console.log(value,)
       let obj = {}
       this.optiontype.forEach(item => {
@@ -468,7 +467,7 @@ export default {
               obj[item.value] = true;
             }
           })
-          //公共存放区   cntyArrOptins 
+          //公共存放区  cntyArrOptins 
           this.cntyArrOptins.children = this.cntyArrOptins.forEach((item => {
             if (item.value === val[1]) {
               // item.children     网格级数据

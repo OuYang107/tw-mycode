@@ -5,8 +5,8 @@
         <el-row>
           <el-col :span="4">
             <div class="grid-content">
-              小区编码:
-              <el-autocomplete style="width: 140px"
+              小区编码：
+              <el-autocomplete style="width: 130px"
                                clearable
                                v-model="searchData.cellCode"
                                :fetch-suggestions="querySearchAsync"
@@ -21,23 +21,24 @@
           </el-col>
           <el-col :span="4">
             <div class="grid-content">
-              小区名称:
+              小区名称：
               <!-- <el-input style="width: 140px"
                         v-model="searchData.discName"
                         size="mini"></el-input> -->
-              <el-autocomplete style="width: 140px"
+              <el-autocomplete style="width: 130px"
                                clearable
                                v-model="searchData.baseInfoName"
                                :fetch-suggestions="querySearchAsyncone"
                                placeholder="请输入内容"
                                size="mini"
                                :trigger-on-focus="false"
-                               @select="handleSubmitone"></el-autocomplete>
+                               @select="handleSubmitone">
+              </el-autocomplete>
             </div>
           </el-col>
           <el-col :span="7">
             <div class="block grid-content">
-              <span style="font-size: 12px width: 140px">导入日期:</span>
+              <span style="font-size: 12px width: 130px">导入日期：</span>
               <el-date-picker v-model="rangeDate"
                               size="mini"
                               clearable
@@ -50,11 +51,11 @@
           </el-col>
           <el-col :span="4">
             <div class="grid-content">
-              导入人员:
+              导入人员：
               <!-- <el-input style="width: 140px"
                         v-model="searchData.settleId"
                         size="mini"></el-input> -->
-              <el-autocomplete style="width: 140px"
+              <el-autocomplete style="width: 130px"
                                clearable
                                v-model="searchData.importPerson"
                                :fetch-suggestions="querySearchAsynctow"
@@ -64,7 +65,7 @@
                                @select="handleSubmittow"></el-autocomplete>
             </div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="5">
             <div class="grid-content a">
               <el-row>
                 <el-button type="primary"
@@ -72,9 +73,8 @@
                            @click="query">查询</el-button>
                 <el-button size="mini"
                            @click="dialogVisible = true">导入</el-button>
-                <!-- <el-button size="mini"
-                         type="warning"
-                         @click="noresetting">导出</el-button> -->
+                <el-button size="mini"
+                           @click="noresetting">重置</el-button>
               </el-row>
               <el-col :span="3">
                 <!-- <el-button
@@ -186,7 +186,7 @@
       <!-- <el-row> -->
       <el-dialog :visible.sync="dialogVisible"
                  :before-close="handleDialogClose"
-                 width="70%">
+                 width="50%">
         <!-- 是否全覆盖 <el-select size="mini"
                    style="width: 140px"
                    v-model="isfugai"
@@ -251,7 +251,7 @@ export default {
         // statisYear: 2021,
         pageNo: 1,    //一页条数
         pageSize: 10,      //页数
-        total: 10,
+        total: 0,
         cellCode: "",
         baseInfoName: "",
         importEndTime: "",
@@ -319,7 +319,6 @@ export default {
         console.log(err)
       })
     },
-
     handeleDetail (row) {
       console.log(row)
       this.discCodes.splice(0, 1, row)         //-- 改动
@@ -499,6 +498,12 @@ export default {
                   // console.log(res, 55555555555)
                   obj.push(arr.error)
                   obj.push(arr.question)
+                  let item = arr
+                  for (var _demo in item) {
+                    if (_demo.indexOf('exception') != -1)
+                      // console.log(11111111)
+                      obj.push(item[_demo])
+                  }
                   if (res.data.code == 0) {
                     obj.push(res.data.msg)
                   }
@@ -530,6 +535,10 @@ export default {
       this.$refs["upfiles"].clearFiles();
     },
     noresetting () {      //导出按钮
+      this.searchData.cellCode = ''
+      this.searchData.baseInfoName = ''
+      this.rangeDate = ""
+      this.searchData.importPerson = ''
     },
     rowClass () {
     },
@@ -582,7 +591,7 @@ export default {
 .listtpey {
   overflow-y: scroll;
   height: 150px;
-  width: 700px;
+  width: 80%;
   border: 1px solid black;
 }
 .selects /deep/ .el-input--suffix {

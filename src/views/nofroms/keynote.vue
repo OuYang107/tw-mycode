@@ -23,7 +23,7 @@
         <el-col :span="3">
           <div class="grid-content">
             期数：
-            <el-select size="mini "
+            <el-select size="mini"
                        style="width: 90px"
                        v-model="qishu"
                        placeholder="请选择"

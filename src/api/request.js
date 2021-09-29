@@ -8,15 +8,13 @@ import {
 import qs from 'qs'
 // import commonConfig from '../config.js';
 var loadingTime = 1000;
-axios.defaults.timeout = 15000;
+// axios.defaults.timeout = 30000;
 axios.interceptors.request.use(
-
   config => {
     // console.log('请求拦截器成功!',config)
     if (store.state.token) {
       // config.headers.token = store.state.token;           //原
       config.headers['X-CSRF-TOKEN'] = store.state.token;
-
     }
     // config.transformRequest = [function (data) {
     //   // 在请求之前对data传参进行格式转换
@@ -111,8 +109,7 @@ export function requestGet (XMLObject) {
   return new Promise((resolve, reject) => {
     let showLoading =
       XMLObject.showLoading || XMLObject.showLoading === undefined ?
-        true :
-        XMLObject.showLoading;
+        true : XMLObject.showLoading;
     if (showLoading) {
       let time = XMLObject.loadingTime || loadingTime;
       // console.dir(Vue.$httpLoading);

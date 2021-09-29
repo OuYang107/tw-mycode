@@ -447,7 +447,7 @@
         <el-table-column prop="keymanUnsatisType"
                          label="集团关键人满意度类型"
                          show-overflow-tooltip
-                         width="160"
+                         width="160" 
                          align="center">
         </el-table-column>
         <el-table-column prop="keymanUnsatisReason"

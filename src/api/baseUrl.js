@@ -2,7 +2,7 @@ let url = window.location.protocol + '//' + window.location.host
 export default {
   // development: "http://200.200.1.194:9191",
   // development: "http://192.168.199.35:9090",
-  development: "http://200.200.1.172:8082",  //biaoge  5387
+  development: "http://200.200.1.172:8089",  //biaoge  5387
   // development: "http://200.200.1.172:8081/iop2/monitoring",
   // development: "http://200.200.1.172:8081/iop2/monitoring",
   // development: "http://172.16.0.50:8099",   //xiao

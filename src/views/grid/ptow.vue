@@ -1,11 +1,8 @@
 <template>
-  <div
-    id="mainn"
-    :style="{'width': girdWidth,'height':'140px'}"
-  >
+  <div id="mainn"
+       :style="{'width': girdWidth,'height':'140px'}">
   </div>
 </template>
-
 <script>
 import * as echarts from 'echarts';
 export default {
@@ -32,7 +29,6 @@ export default {
       //的formatter函数是访问不到vue里面的data数据的
       // 指定图表的配置项和数据
       var option = {
-
         tooltip: {
           transitionDuration: 0,
           // trigger: 'item'
@@ -56,7 +52,6 @@ export default {
             let tarValue = 0;
             for (let i = 0, l = data.length; i < l; i++) {
               total += data[i].value;
-
               // console.log(name)
               if (data[i].name == name) {
                 tarValue = data[i].value;

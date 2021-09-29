@@ -18,7 +18,7 @@ export default new Vuex.Store({
       window.sessionStorage.setItem('authInfo', JSON.stringify(authInfo))
     },
   },
-  actions: {
+  actions: {   //异步
     changeToken (context, value) {
       context.commit('setToken', value)
     },

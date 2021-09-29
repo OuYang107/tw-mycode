@@ -112,6 +112,7 @@ export function formatSeconds (value) {
       hourTime = parseInt(hourTime % 24)
     }
   }
+  
   var result = ''
   if (secondTime >= 0) {
     if (parseInt(secondTime) < 10) {

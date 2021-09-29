@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="4">
             <div class="grid-content">
-              部门:
+              部门：
               <!-- <el-autocomplete style="width: 140px"
                                v-model="searchData.deptName"
                                :fetch-suggestions="querySearchAsyncone"
@@ -33,13 +33,13 @@
           </el-col>
           <el-col :span="4">
             <div class="grid-content">
-              策略名称:
+              策略名称：
               <!-- <el-input style="width: 140px"
                         clearable
                         v-model="searchData.advicename"
                         placeholder="请输入内容"
                         size="mini"></el-input> -->
-              <el-autocomplete style="width: 140px"
+              <el-autocomplete style="width: 130px"
                                v-model="searchData.advicename"
                                :fetch-suggestions="querySearchAsync"
                                placeholder="请输入内容"
@@ -50,7 +50,7 @@
           </el-col>
           <el-col :span="7">
             <div class="block grid-content">
-              <span style="font-size: 12px width: 140px">导入日期:</span>
+              <span style="font-size: 12px width: 140px">执行日期：</span>
               <el-date-picker v-model="rangeDate"
                               size="mini"
                               clearable
@@ -73,7 +73,7 @@
                                @select="handleSubmittow"></el-autocomplete>
             </div> -->
           </el-col>
-          <el-col :span="3">
+          <el-col :span="8">
             <div class="grid-content a">
               <el-row>
                 <el-button type="primary"
@@ -83,6 +83,7 @@
                            @click="dialogVisible = true">导入</el-button> -->
               </el-row>
               <el-col :span="3">
+                <div></div>
               </el-col>
             </div>
           </el-col>
@@ -167,7 +168,6 @@
                            width="105"
                            align="center">
           </el-table-column>
-
         </el-table>
         <el-pagination :current-page.sync="searchData.pageNo"
                        :page-size="searchData.pageSize"
@@ -182,7 +182,6 @@
     <div class="dialog">
       <!--    //==================== -->
       <!-- <el-row> -->
-
       <el-dialog :visible.sync="dialogVisible"
                  :before-close="handleDialogClose"
                  width="70%">
@@ -277,7 +276,6 @@ export default {
       content: '',
       discCodes: [],
       restaurants: [],
-
     };
   },
   mounted () {
@@ -371,8 +369,8 @@ export default {
     },
     handleSubmit (item) {
       // console.log(item);
-    },
 
+    },
     resetting () { // 导入按钮
       this.dialogVisible = true
     },
@@ -414,8 +412,6 @@ export default {
       })
       // console.log()
       formData.append('type', this.files.type);
-
-
       // -------------------
       let obj = []
       apiSend.checkExcels({ data: formData }).then(res => {
@@ -487,7 +483,7 @@ export default {
 .listtpey {
   overflow-y: scroll;
   height: 150px;
-  width: 700px;
+  width: 80%;
   border: 1px solid black;
 }
 .selects /deep/ .el-input--suffix {
@@ -499,7 +495,6 @@ export default {
 .selects /deep/ .el-input--suffix {
   height: 28px !important;
 }
-
 .selects /deep/ .el-input__inner {
   height: 28px !important;
   // display: l;
@@ -521,7 +516,6 @@ export default {
   height: 100%;
   padding: 24px;
 }
-
 .page {
   background: white;
 }
@@ -596,7 +590,6 @@ export default {
     }
   }
 }
-
 .page-title {
   padding: 10px 10px 10px 0;
   margin-bottom: 10px;

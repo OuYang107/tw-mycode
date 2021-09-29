@@ -258,6 +258,11 @@ const download5GSatisModel = function (params) {   // 模板下载
   return requestExcel(getParams(params));
 };
 
+const getDifferences = function (params) {   //查询不满客户修复效果分析
+  params.url = url.getDifferences;
+  return requestPost(getParams(params));
+};
+
 export default {
   getSummaryData,
   getDetailData,
@@ -307,5 +312,6 @@ export default {
   findTaDtUsUnsatisEvalMid05DByDeptName,
   findTaDtUsUnsatisEvalMid05DInfo,
 
-  download5GSatisModel
+  download5GSatisModel,
+  getDifferences
 };

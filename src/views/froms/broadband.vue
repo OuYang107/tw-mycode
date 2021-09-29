@@ -596,7 +596,6 @@ export default {
       // console.log(o);
       // return;
       apiSend.broadbandSelect({ data: o }).then((res) => {
-
         // console.log(11111111)
         //第三级
         // this.searchData.Code = o
@@ -605,13 +604,13 @@ export default {
           console.log(val[1], 1)
           let cntyArr = {}
           if (val[1]) {
-            console.log("if")
-            console.log(item.gridName, item.gridCode)
+            // console.log("if")
+            // console.log(item.gridName, item.gridCode)
             cntyArr.label = item.gridName
             cntyArr.value = item.gridCode
           } else {
-            console.log('else')
-            console.log(item.installCntyCode)
+            // console.log('else')
+            // console.log(item.installCntyCode)
             cntyArr.label = item.installCniyName
             cntyArr.value = item.installCntyCode // installCntyCode
             cntyArr.children = []

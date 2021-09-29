@@ -665,7 +665,6 @@
           <p v-for="(item,index) in content"
              :key="index">{{item }}</p>
         </div>
-
         <span slot="footer"
               class="dialog-footer">
           <el-button @click="clearFile()"
@@ -688,7 +687,6 @@ export default {
     return {
       dialogVisible: false,
       // year: "2021",
-
       tableData: [],
       searchData: {
         // statisTypeId: "5",
@@ -836,7 +834,6 @@ export default {
     },
     resetting () { // 导入按钮
       this.dialogVisible = true
-
     },
     setChange (_file, fileList) {
       // console.log(fileList)
@@ -870,7 +867,6 @@ export default {
     confirm () {  //确认按钮
       // this.$refs["upfiles"].clearFiles();
       // this.dialogVisible = false;
-
       if (this.fileList.length == 0) {
         this.$message.warning("请上传文件！");
         return;
@@ -895,7 +891,7 @@ export default {
         // console.log(item)
         if (arr.code == 1) {        //item.msg +  item.fileName + 
           obj.push(arr.msg)
-          // console.log(obj)             
+          // console.log(obj) 
           // for (var _demo in item) {
           //   if (_demo.indexOf('exception') != -1)
           //     obj.push(item.fileName + item[_demo])
@@ -923,7 +919,13 @@ export default {
         //     a[item.value] = true;
         //   }
         // })
-        console.log(obj)
+        // let a = ["fs5645","fs5464654","fs48545"]
+        // for (let a in item) {
+
+        // if (a.indexOf('fa') != -1)
+        //       obj.push(item)
+        //   }
+        // console.log(obj)
         this.content = obj
         // })
       }).catch(err => {
@@ -936,17 +938,14 @@ export default {
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
-    noresetting () {      //导出按钮
+    noresetting () { },      //导出按钮
 
-    },
+
     handleChangetype (_val, _key) {      //结算月份按钮
       // console.log(val, key)
     },
-    rowClass () {
-
-    },
+    rowClass () { },
     cellStyle () {
-
     },
     handleCurrentChange (val) { // 条数
       this.searchData.pageNo = val;
