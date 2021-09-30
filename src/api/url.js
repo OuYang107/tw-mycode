@@ -150,5 +150,11 @@ export default {
   download5GSatisModel: "/SatisfactionImport/download5GSatisModel",
 
   // /detail/getDifferences 全网结算新增页面接口
-  getDifferences: "/detail/getDifferences"
+  getDifferences: "/detail/getDifferences",
+
+  // /system/getDIffExcelTemplate 差异原因模板下载
+  getDIffExcelTemplate: "/system/getDIffExcelTemplate",
+
+  // /system/diffUploadExcel差异原因导入接口
+  diffUploadExcel: "/system/diffUploadExcel"
 };

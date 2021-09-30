@@ -481,7 +481,7 @@ export default {
       // this.dialogVisible = false;
       if (this.fileList.length == 0) {
         this.$message.warning("请上传文件！");
-        return;
+         return;
       }
       let formData = new FormData();
       // console.log(this.fileList)

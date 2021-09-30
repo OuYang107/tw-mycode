@@ -262,6 +262,25 @@ const getDifferences = function (params) {   //查询不满客户修复效果分
   params.url = url.getDifferences;
   return requestPost(getParams(params));
 };
+// const getDIffExcelTemplate = function (params) {      //导入原因模板下载
+//   params.url = url.getDIffExcelTemplate;
+//   return requestExcel(getParams(params));
+// };
+
+// const diffUploadExcel = function (params) {   //差异原因导入
+//   params.url = url.diffUploadExcel;
+//   return requestPost(getParams(params));
+// };
+const diffUploadExcel = function (params) {
+  params.url = url.diffUploadExcel;
+  return requestFile(getParams(params));
+};
+
+
+const getDIffExcelTemplate = function (params) {
+  params.url = url.getDIffExcelTemplate;
+  return requestGet(getParams(params));
+};
 
 export default {
   getSummaryData,
@@ -313,5 +332,8 @@ export default {
   findTaDtUsUnsatisEvalMid05DInfo,
 
   download5GSatisModel,
-  getDifferences
+  getDifferences,
+  getDIffExcelTemplate,
+  diffUploadExcel,
+
 };

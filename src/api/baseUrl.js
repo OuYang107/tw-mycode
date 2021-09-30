@@ -12,12 +12,12 @@ export default {
   // development: "http://200.200.1.87:8085",
   // development: "http://200.200.1.172:8080/Scheduling_war", //调度协同
 
-  // production: url + '/iop/netwidebilling' //全网结算
-  // production: url + '/p/DemoServer' //4个不满意查询      
+  production: url + '/iop/netwidebilling' //全网结算
+  // production: url + '/p/DemoServer' //4个不满意查询
   // production: url + '/p/DemoServer/satisfactInfo' //6个满意度 --曾繁华
 
   // production: url + '/p/DemoServer' //6个满意度
-  production: url + '/p/DemoServer' //详情导入
+  // production: url + '/p/DemoServer' //详情导入
   // production: url
   // production: url
 };

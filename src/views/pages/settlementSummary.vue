@@ -60,6 +60,9 @@
           <el-button size="mini"
                      type="success"
                      @click="dialogVisible = true">导入</el-button>
+          <el-button size="mini"
+                     type="success"
+                     @click="dialogVisibleone = true">原因导入</el-button>
         </el-row>
         <el-row style="margin-top: 10px">
           <el-col :span="6"
@@ -256,8 +259,8 @@
                        style="margin-top: 20px; text-align: center"
                        :page-sizes="[1, 5, 10, 30]"
                        layout="total, sizes, prev, pager, next, jumper"
-                       @size-change="handleSizeChanges"
-                       @current-change="handleCurrentChanges" />
+                       @size-change="handleSizeChangeone"
+                       @current-change="handleCurrentChangeone" />
       </div>
 
       <div v-else-if="isshow==3">
@@ -289,6 +292,7 @@
         </el-row>
         <el-table :data="tableDatas"
                   style="width: 100%"
+                  fit
                   :header-cell-style="{ background: '#eaeff7', color: '#444' }">
           <!-- <el-table-column :label="item['FIELD_NAME']"
                            :prop="item['UPPER(FIELD)']"
@@ -324,8 +328,8 @@
                        style="margin-top: 20px; text-align: center"
                        :page-sizes="[1, 5, 10, 30]"
                        layout="total, sizes, prev, pager, next, jumper"
-                       @size-change="handleSizeChanges"
-                       @current-change="handleCurrentChanges" />
+                       @size-change="handleSizeChangetow"
+                       @current-change="handleCurrentChangetow" />
       </div>
     </div>
 
@@ -367,6 +371,45 @@
                    size="mini">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog :visible.sync="dialogVisibleone"
+               :before-close="handleDialogCloseone"
+               width="60%">
+      <div style="text-align: right">
+        <el-button @click="getDownloadone"
+                   type="success"
+                   size="mini">模板下载</el-button>
+      </div>
+      <el-upload class="upload-demo"
+                 drag
+                 action="#"
+                 :http-request="uploadFiless"
+                 :limit="1"
+                 ref="upfilesone"
+                 list-type="excel"
+                 multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip"
+             slot="tip">
+          只能上传Excel文件，且不超过500kb
+        </div>
+      </el-upload>
+      <!-- <el-upload
+            class="upload-demo"
+            ref="upload"
+            action="#"
+            :http-request="dialogVisible"
+            :limit="1">下载文件</el-upload> -->
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="clearFilesone"
+                   size="mini">取 消</el-button>
+        <el-button type="primary"
+                   @click="confirmone"
+                   size="mini">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 导入重复文件弹出框 -->
     <!-- <el-dialog
   :visible.sync="dialogVisible"
@@ -401,6 +444,7 @@ export default {
     // console.log(typeof parseInt(currentDate))
     return {
       dialogVisible: false,
+      dialogVisibleone: false,
       isshow: 1,
       jieruisfilter: [
         {
@@ -483,6 +527,10 @@ export default {
         file: "",
         iscover: false,
       },
+      filesone: {
+        file: "",
+        iscover: false,
+      },
     };
   },
 
@@ -524,11 +572,20 @@ export default {
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
     },
+    handleDialogCloseone () {
+      this.dialogVisibleone = false;
+      this.$refs["upfilesone"].clearFiles();
+    },
     //取消按钮
     clearFiles () {
       // clearFiles
       this.dialogVisible = false;
       this.$refs["upfiles"].clearFiles();
+    },
+    clearFilesone () {
+      // clearFiles
+      this.dialogVisibleone = false;
+      this.$refs["upfilesone"].clearFiles();
     },
     //确认
     confirm () {
@@ -545,15 +602,8 @@ export default {
           console.log(res.data.data);
           if (res.data.data.msg == "导入成功") {
             this.findTable(); //调完导入接口后对插入的数据查询
-            // console.log(114584);
           }
-          // 提示用户失败原因
-          //  console.log(res.data)
-          //    if(res.data.code == 1){
-          //   this.$message.warning('导入失败,第2行数据存在空值！');
-          //    }
           if (res.data.data.code == 2) {
-            // this.$message.warning('导入失败,第2行数据已存在，是否进行覆盖导入!');
             this.$confirm(res.data.data.msg + ", 确认提交?", "提示", {
               confirmButtomText: "确认",
               cancelButtonText: "取消",
@@ -579,20 +629,62 @@ export default {
               });
             return;
           }
-          //            handleDelete(record) {
-          //              this.$confirm({
-          //              title:'确认删除吗？',
-          //              okText: '是',
-          //              cancelText: '否',
-          //              icon: 'exclamation-circle',
-          //              confirm: this.handleClear()
-          //            })
-          //            }
-          // this.$message.warning('文件上传成功！');
         })
         .catch((err) => {
           console.log(err);
           this.$message.warning(err.data.data.msg + "!");
+        });
+    },
+    confirmone () {       //
+      this.$refs["upfilesone"].clearFiles();
+      this.dialogVisibleone = false;
+      // console.log(this.filesone.file, 1111111)
+      // console.log(this.filesone.file)
+      if (this.filesone.file == "") {
+        this.$message.warning("请上传文件！111111111111");
+        return;
+      }
+      apiSend
+        .diffUploadExcel({ data: this.filesone })
+        .then((res) => {
+          this.$message.warning(res.data.data.msg + "!");
+          // console.log(res);
+          if (res.data.data.msg == "导入成功") {
+            this.findTable(); //调完导入接口后对插入的数据查询
+          }
+          if (res.data.data.code == 2) {
+            // this.$message.warning('导入失败,第2行数据已存在，是否进行覆盖导入!');
+            this.$confirm(res.data.data.msg + ", 确认提交?", "提示", {
+              confirmButtomText: "确认",
+              cancelButtonText: "取消",
+              type: "warning",
+            })
+              .then((res) => {
+                if (confirm) {
+                  //再调接口
+                  this.filesone.iscover = true;
+                  apiSend.diffUploadExcel({ data: this.filesone })
+                    .then((res) => {
+                      this.filesone.iscover = false;
+                      this.findTable(); //调完导入接口后查询
+                      // this.$message.warning(res.data.data.msg + "!");
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            return;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          // this.$message.warning(err.data.data.msg + "!");
+          this.$message.warning(err.data.msg + "!");
+
         });
     },
     //模板下载按钮
@@ -610,9 +702,34 @@ export default {
         "_blank"
       );
     },
+    //模板下载按钮2
+    getDownloadone () {
+      // this.TemplateData["statisMonth"] = this.searchData["statisMonth"];
+      // apiSend.getDIffExcelTemplate({ data: this.TemplateData["statisMonth"] }).then(res => {
+      //   console.log(res)
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+      this.TemplateData["statisMonth"] = this.searchData["statisMonth"];
+      const base =
+        process.env.NODE_ENV == "development"
+          ? baseUrl.development
+          : baseUrl.production;
+      window.open(
+        base +
+        requestUrl.getDIffExcelTemplate +
+        "?statisMonth=" +
+        this.TemplateData["statisMonth"],
+        "_blank"
+      );
+    },
     //导入按钮
     uploadFiles (e) {
       this.files.file = e.file;
+    },
+    //导入按钮2
+    uploadFiless (e) {
+      this.filesone.file = e.file;
     },
     //全量业务选择
     select (value) {
@@ -721,11 +838,20 @@ export default {
       this.searchData.pageSize = val;
       this.findTable();
     },
-    handleCurrentChanges (val) {
+    handleCurrentChangeone (val) {
       this.searchDatas.pageNo = val;
       this.handeleDetail(this.detailId);
     },
-    handleSizeChanges (val) {
+    handleSizeChangeone (val) {
+      this.searchDatas.pageSize = val;
+      this.handeleDetail(this.detailId);
+    },
+
+    handleCurrentChangetow (val) {
+      this.searchDatas.pageNo = val;
+      this.handeleDetail(this.detailId);
+    },
+    handleSizeChangetow (val) {
       this.searchDatas.pageSize = val;
       this.handeleDetail(this.detailId);
     },

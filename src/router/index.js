@@ -229,7 +229,7 @@ export default new Router({
     //     import("@/views/pages/family"),
     //   name: "family",
     //   meta: {
-    //     navbar: 1, 
+    //     navbar: 1,
     //     title : 'family' 
     //   }   
     // },

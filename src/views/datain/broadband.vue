@@ -10,7 +10,7 @@
         <el-col :span="3">
           <div class="grid-content">
             年份：
-            <el-select size="mini "
+            <el-select size="mini"
                        style="width: 100px"
                        v-model="searchData.statisYear"
                        placeholder="选择年"
@@ -36,7 +36,7 @@
         <el-col :span="3">
           <div class="grid-content">
             期数：
-            <el-select size="mini "
+            <el-select size="mini"
                        style="width: 90px"
                        v-model="searchData.cycNum"
                        placeholder="请选择"
@@ -107,7 +107,6 @@
                 height="370"
                 :header-cell-style="rowClass"
                 :cell-style="cellStyle">
-
         <el-table-column prop="sn"
                          label="序号"
                          width="105"
@@ -123,7 +122,6 @@
                          align="center"
                          width="105">
         </el-table-column>
-
         <el-table-column prop="cntyName"
                          label="县分"
                          width="105"
@@ -139,7 +137,6 @@
                          width="120"
                          align="center">
         </el-table-column>
-
         <el-table-column prop="d2Question"
                          label="D2 请问您接听电话的这个手机号码，是您本人在使用吗？"
                          width="105"
@@ -150,7 +147,6 @@
                          width="105"
                          align="center">
         </el-table-column>
-
         <el-table-column prop="j2Question"
                          label="J2 您家正在使用的中国移动家庭宽带是多少兆？"
                          align="center"
@@ -161,7 +157,6 @@
                          width="105"
                          align="center">
         </el-table-column>
-
         <el-table-column prop="r1Question"
                          label="R1 上网质量"
                          align="center"
@@ -394,7 +389,6 @@
                          width="105"
                          align="center">
         </el-table-column>
-
         <!--  <el-table-column prop=""
                          label=""
                          width="105"
@@ -489,7 +483,6 @@
           <p v-for="(item,index) in content"
              :key="index">{{item}}</p>
         </div>
-
         <span slot="footer"
               class="dialog-footer">
           <el-button @click="clearFile()"
@@ -512,7 +505,6 @@ export default {
     return {
       dialogVisible: false,
       // year: "2021",
-
       tableData: [],
       searchData: {
         // statisTypeId: "5",
